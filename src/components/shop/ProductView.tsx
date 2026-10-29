@@ -41,11 +41,25 @@ function Gallery({ images, art, name, badge, shade }: { images: Props["images"];
 
   return (
     <div className="flex min-w-0 flex-col gap-3 md:gap-4">
-      <div className={`relative flex aspect-square items-center justify-center overflow-hidden rounded-[22px] md:rounded-[28px] ${art.tint}`}>
+      {/* Vuông, nhưng không cao quá màn hình (màn rộng thành khung ngang) để luôn thấy trọn sản phẩm */}
+      <div
+        className={`relative flex aspect-square max-h-[calc(100svh-11rem)] min-h-80 w-full items-center justify-center overflow-hidden rounded-[22px] md:rounded-[28px] ${art.tint}`}
+      >
         {current ? (
-          <Image src={current.url} alt={`${name} — ảnh ${active + 1}`} fill priority sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
+          <Image
+            src={current.url}
+            alt={`${name} — ảnh ${active + 1}`}
+            fill
+            priority
+            sizes="(min-width: 1024px) 55vw, 100vw"
+            className="object-cover lg:object-contain"
+          />
         ) : (
-          <ProductArt kind={art.kind} shade={shade} className="h-auto w-[56%] transition-colors duration-300 [&_path]:transition-colors" />
+          <ProductArt
+            kind={art.kind}
+            shade={shade}
+            className="h-[64%] w-auto max-w-[70%] transition-colors duration-300 [&_path]:transition-colors"
+          />
         )}
         {badge && (
           <span className="absolute left-4 top-4 rounded-full bg-ink px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-cream md:left-4.5 md:top-4.5">
