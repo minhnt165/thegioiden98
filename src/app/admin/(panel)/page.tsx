@@ -55,13 +55,12 @@ export default async function DashboardPage({ searchParams }: PageProps<"/admin"
   const data = await getDashboardData(range);
   const now = new Date();
 
-  // Đơn hàng (giai đoạn 4) chưa có màn hình: ô việc cần làm của đơn tạm chưa bấm được
   const todo = [
-    { label: "Chờ xác nhận", value: data.todo.pending, alert: true },
-    { label: "Chờ đóng gói", value: data.todo.packing },
-    { label: "Đang giao", value: data.todo.shipping },
+    { label: "Chờ xác nhận", value: data.todo.pending, alert: true, href: "/admin/don-hang?tab=cho-xac-nhan" },
+    { label: "Chờ đóng gói", value: data.todo.packing, href: "/admin/don-hang?tab=cho-dong-goi" },
+    { label: "Đang giao", value: data.todo.shipping, href: "/admin/don-hang?tab=dang-giao" },
     { label: "Hết hàng", value: data.todo.outOfStock, alert: true, href: "/admin/san-pham?tab=het-hang" },
-    { label: "Đổi trả", value: data.todo.returned },
+    { label: "Đổi trả", value: data.todo.returned, href: "/admin/don-hang?tab=doi-tra" },
   ];
 
   return (
@@ -133,15 +132,23 @@ export default async function DashboardPage({ searchParams }: PageProps<"/admin"
           <RevenueChart days={data.chart} />
         </Card>
 
-        <Card title="Đơn mới nhất" className="xl:col-span-5">
+        <Card
+          title="Đơn mới nhất"
+          aside={
+            <Link href="/admin/don-hang" className="text-[13px] underline-offset-4 hover:underline">
+              Xem tất cả
+            </Link>
+          }
+          className="xl:col-span-5"
+        >
           {data.recentOrders.length ? (
             <ul className="flex flex-col">
               {data.recentOrders.map((o) => (
                 <li key={o.id} className="flex items-center justify-between gap-3 border-b border-line-soft py-3 last:border-0">
                   <span className="flex min-w-0 flex-col gap-0.5">
-                    <span className="truncate text-[14px] font-medium">
+                    <Link href={`/admin/don-hang/${o.id}`} className="truncate text-[14px] font-medium hover:text-terracotta">
                       {o.code} · {o.customer}
-                    </span>
+                    </Link>
                     <span className="truncate text-[12px] text-muted">
                       {o.summary} · {CHANNEL_LABEL[o.channel]}
                     </span>

@@ -61,6 +61,53 @@ export function Card({ title, aside, children, className = "" }: { title?: React
   );
 }
 
+/**
+ * Phân trang rút gọn: 1 … 4 5 6 … 12.
+ * Link ghép từ pathname + query hiện tại (chỉ nhận dữ liệu, không nhận hàm — file này cũng được client component import).
+ */
+export function Pagination({
+  page,
+  totalPages,
+  pathname,
+  search,
+  param = "trang",
+}: {
+  page: number;
+  totalPages: number;
+  pathname: string;
+  /** Query hiện tại, có hoặc không có "?" */
+  search: string;
+  param?: string;
+}) {
+  if (totalPages <= 1) return null;
+  const href = (p: number) => {
+    const sp = new URLSearchParams(search);
+    if (p > 1) sp.set(param, String(p));
+    else sp.delete(param);
+    const s = sp.toString();
+    return s ? `${pathname}?${s}` : pathname;
+  };
+  const pages = [...new Set([1, page - 1, page, page + 1, totalPages])].filter((p) => p >= 1 && p <= totalPages).sort((a, b) => a - b);
+  return (
+    <nav aria-label="Phân trang" className="flex gap-1.5">
+      {pages.map((p, i) => (
+        <span key={p} className="flex gap-1.5">
+          {i > 0 && p - pages[i - 1] > 1 && <span className="inline-flex size-9 items-center justify-center">…</span>}
+          {p === page ? (
+            <span aria-current="page" className="inline-flex size-9 items-center justify-center rounded-lg bg-ink text-cream">
+              {p}
+            </span>
+          ) : (
+            <Link href={href(p)} className="inline-flex size-9 items-center justify-center rounded-lg border border-line bg-white hover:border-ink">
+              {p}
+            </Link>
+          )}
+        </span>
+      ))}
+    </nav>
+  );
+}
+
 export function Badge({ tone, children }: { tone: keyof typeof TONE_CLASS; children: ReactNode }) {
   return <span className={`inline-flex whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] ${TONE_CLASS[tone]}`}>{children}</span>;
 }

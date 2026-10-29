@@ -70,6 +70,7 @@ src/
 
 - Tiền lưu số nguyên VND (`bigint`). Giá & tồn theo **variant**; `products.base_price` chỉ là giá "từ".
 - Không xóa cứng sản phẩm/đơn/báo giá — dùng `status`. Xóa ảnh phải xóa cả file trong Storage.
+- Kho trừ ngay khi tạo đơn, cộng lại khi hủy / khách trả hàng (`orders.stock_deducted`). Chỉ sửa được đơn đang chờ xác nhận.
 - SĐT Zalo, link Messenger/Instagram đọc từ bảng `settings` (`is_public = true`), sửa ở `/admin/cai-dat`.
 - Mã đơn `#1047`, mã báo giá `BG-0012` sinh bằng sequence. Link báo giá công khai dùng `public_token` ngẫu nhiên.
 - Quyền: khách (anon) chỉ đọc danh mục, sản phẩm `active`, cài đặt công khai. User mới mặc định `staff`; chỉ `admin` vào được `/admin`.

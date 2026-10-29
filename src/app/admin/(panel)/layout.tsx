@@ -5,6 +5,7 @@ import { LogOut } from "lucide-react";
 import { signOut } from "@/app/admin/actions";
 import { LogoMark } from "@/components/brand/Logo";
 import { AdminNav, AdminNavFallback } from "@/components/admin/AdminNav";
+import { ContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { getCurrentUser } from "@/lib/admin/auth";
 import { createClient } from "@/lib/supabase/server";
 
@@ -61,21 +62,6 @@ async function AdminGate({ children }: { children: React.ReactNode }) {
     );
   }
   return children;
-}
-
-function ContentSkeleton() {
-  return (
-    <div aria-busy="true" aria-label="Đang tải" className="flex flex-col gap-5">
-      <div className="h-9 w-56 animate-pulse rounded-input bg-line/60" />
-      <div className="h-28 animate-pulse rounded-2xl bg-white/70" />
-      <div className="grid gap-4 md:grid-cols-4">
-        {Array.from({ length: 4 }, (_, i) => (
-          <div key={i} className="h-24 animate-pulse rounded-2xl bg-white/70" />
-        ))}
-      </div>
-      <div className="h-72 animate-pulse rounded-2xl bg-white/70" />
-    </div>
-  );
 }
 
 export default function AdminPanelLayout({ children }: LayoutProps<"/admin">) {

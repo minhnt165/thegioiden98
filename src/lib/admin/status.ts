@@ -33,5 +33,18 @@ export const CHANNEL_LABEL: Record<Enums<"sales_channel">, string> = {
   showroom: "tại showroom",
 };
 
+/** Tên kênh đứng riêng (cột "Kênh", bộ lọc) + màu chấm theo mockup */
+export const CHANNEL_NAME: Record<Enums<"sales_channel">, { label: string; color: string }> = {
+  zalo: { label: "Zalo", color: "bg-zalo" },
+  messenger: { label: "Messenger", color: "bg-messenger" },
+  showroom: { label: "Showroom", color: "bg-muted" },
+};
+
+export const PAYMENT_LABEL: Record<Enums<"payment_method">, string> = {
+  cod: "COD",
+  bank_transfer: "Chuyển khoản",
+  cash: "Tiền mặt",
+};
+
 /** Đơn tính vào doanh thu: mọi trạng thái trừ hủy và đổi trả */
 export const REVENUE_EXCLUDED: Enums<"order_status">[] = ["cancelled", "returned"];

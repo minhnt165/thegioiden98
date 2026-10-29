@@ -148,6 +148,7 @@ export type Database = {
           total: number;
           note: string | null;
           source_quote_id: string | null;
+          stock_deducted: boolean;
           created_at: string;
           updated_at: string;
         },
@@ -162,6 +163,7 @@ export type Database = {
         | "total"
         | "note"
         | "source_quote_id"
+        | "stock_deducted"
         | "created_at"
         | "updated_at",
         [
@@ -178,12 +180,25 @@ export type Database = {
           variant_snapshot: string | null;
           unit_price: number;
           qty: number;
+          sort_order: number;
         },
-        "id" | "variant_id" | "variant_snapshot",
+        "id" | "variant_id" | "variant_snapshot" | "sort_order",
         [
           Rel<"order_items_order_id_fkey", "order_id", "orders">,
           Rel<"order_items_variant_id_fkey", "variant_id", "product_variants">,
         ]
+      >;
+      order_events: Table<
+        {
+          id: string;
+          order_id: string;
+          status: Database["public"]["Enums"]["order_status"] | null;
+          note: string | null;
+          created_by: string | null;
+          created_at: string;
+        },
+        "id" | "status" | "note" | "created_by" | "created_at",
+        [Rel<"order_events_order_id_fkey", "order_id", "orders">]
       >;
       quotes: Table<
         {
@@ -270,11 +285,42 @@ export type Database = {
         Row: { product_id: string | null; sold: number | null };
         Relationships: [Rel<"product_variants_product_id_fkey", "product_id", "products">];
       };
+      order_list: {
+        Row: {
+          id: string | null;
+          code: string | null;
+          status: Database["public"]["Enums"]["order_status"] | null;
+          channel: Database["public"]["Enums"]["sales_channel"] | null;
+          payment: Database["public"]["Enums"]["payment_method"] | null;
+          subtotal: number | null;
+          discount: number | null;
+          shipping_fee: number | null;
+          total: number | null;
+          note: string | null;
+          created_at: string | null;
+          customer_id: string | null;
+          customer_name: string | null;
+          customer_phone: string | null;
+          customer_address: string | null;
+          items_summary: string | null;
+          first_variant: string | null;
+          item_count: number | null;
+          first_product_id: string | null;
+          search: string | null;
+        };
+        Relationships: [Rel<"orders_customer_id_fkey", "customer_id", "customers">];
+      };
     };
     Functions: {
+      admin_save_order: { Args: { p: Json }; Returns: Json };
       admin_save_product: { Args: { p: Json }; Returns: string };
+      admin_set_order_status: {
+        Args: { p_ids: string[]; p_status: Database["public"]["Enums"]["order_status"]; p_note?: string };
+        Returns: number;
+      };
       is_admin: { Args: never; Returns: boolean };
       is_product_active: { Args: { p_product_id: string }; Returns: boolean };
+      variant_label: { Args: { p_variant_id: string }; Returns: string };
     };
     Enums: {
       product_status: "draft" | "active" | "hidden";

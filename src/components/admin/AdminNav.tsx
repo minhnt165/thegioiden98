@@ -9,7 +9,7 @@ type NavItem = { href: string; label: string; icon: LucideIcon; soon?: boolean; 
 // Menu quản trị. Mục "soon" là màn hình của giai đoạn sau, chưa bấm được.
 const NAV: NavItem[] = [
   { href: "/admin", label: "Tổng quan", icon: LayoutGrid, exact: true },
-  { href: "/admin/don-hang", label: "Đơn hàng", icon: ShoppingBag, soon: true },
+  { href: "/admin/don-hang", label: "Đơn hàng", icon: ShoppingBag },
   { href: "/admin/bao-gia", label: "Báo giá", icon: FileText, soon: true },
   { href: "/admin/san-pham", label: "Sản phẩm", icon: Package },
   { href: "/admin/khach-hang", label: "Khách hàng", icon: Users, soon: true },
@@ -44,6 +44,12 @@ function NavList({ isActive, pendingOrders }: { isActive: (item: NavItem) => boo
           >
             <Icon aria-hidden className="size-4.5" strokeWidth={1.6} />
             {item.label}
+            {badge && (
+              <span className="ml-auto inline-flex h-5.5 min-w-5.5 items-center justify-center rounded-full bg-terracotta px-1.5 text-[12px] text-white">
+                {badge}
+                <span className="sr-only"> đơn chờ xác nhận</span>
+              </span>
+            )}
           </Link>
         );
       })}
