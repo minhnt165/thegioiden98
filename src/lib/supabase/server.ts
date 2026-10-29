@@ -2,12 +2,16 @@ import "server-only";
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import type { Database } from "@/types/database";
 import { getSupabaseEnv } from "./env";
 
 // Client theo phiên đăng nhập của người dùng (admin, Server Action). Đọc cookie nên chỉ gọi
 // trong phạm vi request — với Cache Components phải nằm sau <Suspense> hoặc trong Server Action.
 export async function createClient() {
+  // Dữ liệu theo phiên luôn tính lúc có request: supabase-js gọi Date.now() khi kiểm tra token,
+  // Cache Components không cho dùng giá trị thời gian trong lúc prerender.
+  await connection();
   const { url, anonKey } = getSupabaseEnv();
   const cookieStore = await cookies();
 

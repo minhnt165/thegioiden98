@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { MessageSquare } from "lucide-react";
+import { FaFacebookMessenger } from "react-icons/fa";
+import { SiZalo } from "react-icons/si";
 import { Logo } from "@/components/brand/Logo";
 import { GENERAL_MESSAGE, messengerLink, zaloLink } from "@/lib/shop/contact";
 import type { ShopSettings } from "@/lib/shop/settings";
@@ -8,8 +9,9 @@ import { SearchToggle } from "./SearchToggle";
 import { MAIN_NAV } from "./nav";
 
 export function SiteHeader({ settings }: { settings: ShopSettings }) {
-  const contactHref = zaloLink(settings.zaloPhone) ?? messengerLink(settings.messengerUrl, GENERAL_MESSAGE);
-  const contactLabel = zaloLink(settings.zaloPhone) ? "Nhắn Zalo" : "Nhắn tin";
+  const zalo = zaloLink(settings.zaloPhone);
+  const contactHref = zalo ?? messengerLink(settings.messengerUrl, GENERAL_MESSAGE);
+  const ContactIcon = zalo ? SiZalo : FaFacebookMessenger;
 
   return (
     <header className="relative border-b border-line">
@@ -35,10 +37,12 @@ export function SiteHeader({ settings }: { settings: ShopSettings }) {
               href={contactHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden h-11 items-center gap-2 rounded-full bg-ink px-4.5 text-[14px] font-medium text-cream hover:text-glow lg:inline-flex"
+              className={`hidden h-11 items-center gap-2 rounded-full px-4.5 text-[14px] font-medium text-white transition-opacity hover:opacity-90 lg:inline-flex ${
+                zalo ? "bg-zalo" : "bg-messenger"
+              }`}
             >
-              <MessageSquare aria-hidden className="size-4.5" strokeWidth={1.6} />
-              {contactLabel}
+              <ContactIcon aria-hidden className={zalo ? "size-5" : "size-4.5"} />
+              {zalo ? "Nhắn Zalo" : "Nhắn Messenger"}
             </a>
           )}
         </div>

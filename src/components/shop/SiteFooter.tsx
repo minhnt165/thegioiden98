@@ -26,7 +26,7 @@ export function SiteFooter({ settings }: { settings: ShopSettings }) {
           <p className="max-w-90 text-[15px] leading-relaxed text-muted">
             Đèn &amp; nội thất decor chọn lọc. Showroom: {settings.address}. Mở cửa {settings.openingHours} hằng ngày.
           </p>
-          <div className="mt-2">
+          <div className="mt-2 empty:hidden">
             <ContactButtons settings={settings} />
           </div>
         </div>

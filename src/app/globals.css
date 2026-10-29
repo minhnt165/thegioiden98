@@ -24,17 +24,21 @@
   --color-messenger: #8b2fc9;
   --color-instagram: #c13584;
 
-  /* Badge trạng thái ở admin (nền nhạt + chữ đậm) */
-  --color-status-amber-bg: #f8ead2;
-  --color-status-amber: #8a5a12;
+  /* Badge trạng thái ở admin (nền nhạt + chữ đậm, theo design/Admin*.html) */
+  --color-status-amber-bg: #fbe9d7;
+  --color-status-amber: #8a4714;
   --color-status-blue-bg: #e2eaf6;
   --color-status-blue: #2c4f80;
-  --color-status-green-bg: #e3eedf;
-  --color-status-green: #3d6630;
+  --color-status-green-bg: #e1efe6;
+  --color-status-green: #3b7a57;
   --color-status-red-bg: #f6e0dc;
-  --color-status-red: #9a3324;
+  --color-status-red: #a33a3a;
   --color-status-gray-bg: #ebe7df;
   --color-status-gray: #5e5952;
+
+  /* Admin: viền mảnh giữa các dòng, viền nét đứt ô thêm ảnh */
+  --color-line-soft: #eee9df;
+  --color-line-dashed: #b5ac9b;
 
   --font-sans: var(--font-be-vietnam), system-ui, sans-serif;
   --font-serif: var(--font-fraunces), Georgia, serif;

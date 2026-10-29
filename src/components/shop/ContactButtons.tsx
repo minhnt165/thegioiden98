@@ -11,9 +11,8 @@ export function ContactButtons({ settings }: { settings: ShopSettings }) {
   const messenger = messengerLink(settings.messengerUrl, GENERAL_MESSAGE);
   const instagram = instagramLink(settings.instagramUrl);
 
-  if (!zalo && !messenger && !instagram) {
-    return <p className="text-[14px] text-muted">Ghé showroom {settings.address} · {settings.openingHours}.</p>;
-  }
+  // Chưa cấu hình kênh nào: không hiện gì (đoạn giới thiệu ở footer đã có địa chỉ & giờ mở cửa)
+  if (!zalo && !messenger && !instagram) return null;
 
   return (
     <div className="flex flex-wrap gap-2.5">

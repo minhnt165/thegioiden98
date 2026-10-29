@@ -265,8 +265,14 @@ export type Database = {
       >;
       newsletter_subscribers: Table<{ id: string; email: string; created_at: string }, "id" | "created_at">;
     };
-    Views: { [_ in never]: never };
+    Views: {
+      product_sales: {
+        Row: { product_id: string | null; sold: number | null };
+        Relationships: [Rel<"product_variants_product_id_fkey", "product_id", "products">];
+      };
+    };
     Functions: {
+      admin_save_product: { Args: { p: Json }; Returns: string };
       is_admin: { Args: never; Returns: boolean };
       is_product_active: { Args: { p_product_id: string }; Returns: boolean };
     };
