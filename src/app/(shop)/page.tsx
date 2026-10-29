@@ -1,10 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ProductArt } from "@/components/shop/ProductArt";
+import { ProductArt, artKindFor } from "@/components/shop/ProductArt";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { HOME_CATEGORIES } from "@/components/shop/nav";
-import { getCatalog, type CatalogProduct } from "@/lib/shop/catalog";
+import { getCatalog, productImageUrl, type CatalogProduct } from "@/lib/shop/catalog";
 import { GENERAL_MESSAGE, messengerLink, zaloLink } from "@/lib/shop/contact";
-import { SPACES, applyFilters, parseFilters } from "@/lib/shop/filters";
+import { COLORS, SPACES, applyFilters, parseFilters } from "@/lib/shop/filters";
 import { getShopSettings } from "@/lib/shop/settings";
 
 // Icon 5 ô danh mục (nét mảnh, theo mockup)
@@ -50,6 +51,71 @@ const STEPS = [
   { title: "Nhắn Zalo hoặc Messenger", text: "Bấm nút trên trang sản phẩm, tin nhắn đã có sẵn tên món bạn chọn." },
   { title: "Nhận hàng tận nơi", text: "Shop xác nhận, đóng gói kỹ và giao đến bạn." },
 ];
+
+/**
+ * 2 món tiêu biểu của một không gian ở góc trên ô "Mua sắm theo không gian":
+ * ảnh bìa thật nếu sản phẩm đã có ảnh, chưa có thì dùng hình minh họa theo loại (không trùng loại).
+ */
+function SpacePreview({ picks }: { picks: CatalogProduct[] }) {
+  if (!picks.length) return null;
+
+  return (
+    <div aria-hidden className="absolute right-4 top-4 flex h-[62%] items-end gap-2 md:right-6 md:top-6 md:h-[58%] md:gap-3">
+      {picks.map((p, i) =>
+        p.coverPath ? (
+          <span key={p.id} className={`relative aspect-3/4 overflow-hidden rounded-2xl ${i === 0 ? "h-full" : "h-4/5"}`}>
+            <Image src={productImageUrl(p.coverPath)} alt="" fill sizes="200px" className="object-cover" />
+          </span>
+        ) : (
+          <ProductArt
+            key={p.id}
+            kind={artKindFor(p.categorySlug, p.name)}
+            shade={shadeFor(p)}
+            className={`w-auto transition-transform duration-500 group-hover:-translate-y-1 ${i === 0 ? "h-full" : "h-3/4"}`}
+          />
+        ),
+      )}
+    </div>
+  );
+}
+
+/**
+ * Chọn 2 món cho mỗi không gian: ưu tiên món chưa hiện ở ô trước và khác loại nhau,
+ * để 3 ô không lặp cùng một hình.
+ */
+function pickSpacePreviews(catalog: CatalogProduct[]) {
+  const usedIds = new Set<string>();
+  const usedKinds = new Set<string>();
+  return SPACES.map((space) => {
+    // Món chưa dùng & loại hình chưa dùng lên trước, giữ thứ tự "nổi bật" khi bằng điểm
+    const penalty = (p: CatalogProduct) => Number(usedIds.has(p.id)) * 2 + Number(usedKinds.has(artKindFor(p.categorySlug, p.name)));
+    const ranked = applyFilters(
+      catalog.filter((p) => p.spaces.includes(space.value)),
+      parseFilters({}),
+    ).sort((a, b) => penalty(a) - penalty(b));
+    const picks: CatalogProduct[] = [];
+    const kinds = new Set<string>();
+    for (const p of ranked) {
+      const kind = artKindFor(p.categorySlug, p.name);
+      if (kinds.has(kind) && !p.coverPath) continue;
+      kinds.add(kind);
+      picks.push(p);
+      if (picks.length === 2) break;
+    }
+    picks.forEach((p) => {
+      usedIds.add(p.id);
+      usedKinds.add(artKindFor(p.categorySlug, p.name));
+    });
+    return picks;
+  });
+}
+
+/** Màu chao của hình minh họa theo nhóm màu đầu tiên của sản phẩm (đồng, đen…) */
+function shadeFor(product: CatalogProduct): string | undefined {
+  const hex = COLORS.find((c) => c.value === product.colorTags[0])?.hex;
+  // Kem/nhạt quá thì giữ màu than cho rõ hình
+  return hex && hex !== "#F6E8C9" ? hex : undefined;
+}
 
 function HeroArt({ hero, newest }: { hero: CatalogProduct | undefined; newest: CatalogProduct | undefined }) {
   return (
@@ -104,6 +170,7 @@ export default async function HomePage() {
     parseFilters({ "sap-xep": "moi-nhat" }),
   )[0];
   const contactHref = zaloLink(settings.zaloPhone) ?? messengerLink(settings.messengerUrl, GENERAL_MESSAGE);
+  const spacePreviews = pickSpacePreviews(catalog);
 
   return (
     <>
@@ -251,10 +318,13 @@ export default async function HomePage() {
             <Link
               key={space.value}
               href={`/san-pham?khong-gian=${space.value}`}
-              className={`group flex h-40 flex-col justify-end gap-1.5 rounded-card-lg p-6 md:h-90 md:p-7 ${SPACE_TINTS[i]}`}
+              className={`group relative flex h-44 flex-col justify-end gap-1.5 overflow-hidden rounded-card-lg p-6 md:h-90 md:p-7 ${SPACE_TINTS[i]}`}
             >
-              <span className="font-serif text-[26px] group-hover:text-terracotta md:text-[32px]">{space.label}</span>
-              <span className="text-[14px] text-muted">{space.hint}</span>
+              <SpacePreview picks={spacePreviews[i]} />
+              <span className="relative font-serif text-[28px] font-medium group-hover:text-terracotta md:text-[34px]">
+                {space.label}
+              </span>
+              <span className="relative text-[14px] text-muted">{space.hint}</span>
             </Link>
           ))}
         </div>

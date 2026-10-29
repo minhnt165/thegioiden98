@@ -9,9 +9,9 @@ type LogoProps = {
 };
 
 const SIZES = {
-  sm: { mark: 32, text: "text-[16px]" },
-  md: { mark: 40, text: "text-[19px]" },
-  lg: { mark: 96, text: "text-[44px]" },
+  sm: { mark: 32, text: "text-[18px]" },
+  md: { mark: 40, text: "text-[22px]" },
+  lg: { mark: 96, text: "text-[50px]" },
 } as const;
 
 export function LogoMark({ tone = "light", size = 40 }: { tone?: "light" | "dark"; size?: number }) {
@@ -31,8 +31,8 @@ export function Logo({ tone = "light", size = "md", href = "/", className = "" }
     <>
       <LogoMark tone={tone} size={s.mark} />
       <span className={`flex flex-col font-serif leading-none tracking-[-0.02em] ${s.text}`}>
-        <span className="font-normal">Thế Giới Đèn</span>
-        <span className="mt-0.5 font-light italic text-terracotta">98</span>
+        <span className="font-medium">Thế Giới Đèn</span>
+        <span className="font-normal italic text-terracotta">98</span>
       </span>
     </>
   );

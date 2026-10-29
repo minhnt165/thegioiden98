@@ -1,19 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Be_Vietnam_Pro, Fraunces } from "next/font/google";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+// Tiêu đề: Cormorant Garamond (có chân, tương phản nét cao, có nghiêng) · Nội dung: Manrope
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin", "vietnamese"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
   display: "swap",
 });
 
-const beVietnam = Be_Vietnam_Pro({
-  variable: "--font-be-vietnam",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin", "vietnamese"],
-  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
@@ -33,7 +32,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="vi" className={`${fraunces.variable} ${beVietnam.variable} h-full antialiased`}>
+    <html lang="vi" className={`${cormorant.variable} ${manrope.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );

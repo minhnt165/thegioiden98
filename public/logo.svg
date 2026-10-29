@@ -2,8 +2,8 @@
   <path d="M12 54 A38 38 0 0 1 88 54 Z" fill="#1B1916"/>
   <circle cx="50" cy="66" r="17" fill="#B8612A"/>
   <path d="M34 92 H66" stroke="#1B1916" stroke-width="6" stroke-linecap="round"/>
-  <g font-family="Fraunces, Georgia, serif" letter-spacing="-0.8">
-    <text x="114" y="46" font-size="40" font-weight="400" fill="#1B1916">Thế Giới Đèn</text>
-    <text x="114" y="88" font-size="40" font-weight="300" font-style="italic" fill="#B8612A">98</text>
+  <g font-family="Cormorant Garamond, Georgia, serif" letter-spacing="-0.8">
+    <text x="114" y="46" font-size="44" font-weight="500" fill="#1B1916">Thế Giới Đèn</text>
+    <text x="114" y="88" font-size="44" font-weight="400" font-style="italic" fill="#B8612A">98</text>
   </g>
 </svg>

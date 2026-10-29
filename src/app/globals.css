@@ -40,8 +40,8 @@
   --color-line-soft: #eee9df;
   --color-line-dashed: #b5ac9b;
 
-  --font-sans: var(--font-be-vietnam), system-ui, sans-serif;
-  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
 
   --radius-input: 10px;
   --radius-card: 20px;
