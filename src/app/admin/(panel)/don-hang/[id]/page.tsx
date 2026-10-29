@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { OrderNote, OrderStatusActions } from "@/components/admin/OrderActions";
 import { BTN_PRIMARY, BTN_SECONDARY, Badge, Card, PageHeader } from "@/components/admin/ui";
 import { tintFor } from "@/components/shop/ProductArt";
@@ -24,7 +25,7 @@ function Row({ label, children, strong = false }: { label: string; children: Rea
   );
 }
 
-export default async function OrderDetailPage({ params }: PageProps<"/admin/don-hang/[id]">) {
+async function OrderDetailPage({ params }: PageProps<"/admin/don-hang/[id]">) {
   const { id } = await params;
   if (!UUID.test(id)) notFound();
   const order = await getOrderDetail(id);
@@ -168,3 +169,5 @@ export default async function OrderDetailPage({ params }: PageProps<"/admin/don-
     </>
   );
 }
+
+export default withContentSkeleton(OrderDetailPage);

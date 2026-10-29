@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { CustomerForm } from "@/components/admin/CustomerForm";
 import { BTN_PRIMARY, BTN_SECONDARY, Badge, Card, PageHeader } from "@/components/admin/ui";
 import { getCustomerDetail } from "@/lib/admin/customers";
@@ -22,7 +23,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-export default async function CustomerDetailPage({ params }: PageProps<"/admin/khach-hang/[id]">) {
+async function CustomerDetailPage({ params }: PageProps<"/admin/khach-hang/[id]">) {
   const { id } = await params;
   if (!UUID.test(id)) notFound();
   const customer = await getCustomerDetail(id);
@@ -146,3 +147,5 @@ export default async function CustomerDetailPage({ params }: PageProps<"/admin/k
     </>
   );
 }
+
+export default withContentSkeleton(CustomerDetailPage);

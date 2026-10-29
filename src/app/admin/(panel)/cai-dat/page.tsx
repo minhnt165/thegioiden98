@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { SettingsForm } from "@/components/admin/SettingsForm";
 import { PageHeader } from "@/components/admin/ui";
 import { getAllSettings } from "@/lib/admin/settings";
 
 export const metadata: Metadata = { title: "Cài đặt" };
 
-export default async function SettingsPage() {
+async function SettingsPage() {
   const values = await getAllSettings();
   return (
     <>
@@ -14,3 +15,5 @@ export default async function SettingsPage() {
     </>
   );
 }
+
+export default withContentSkeleton(SettingsPage);

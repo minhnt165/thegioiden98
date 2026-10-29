@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { QuoteForm } from "@/components/admin/QuoteForm";
 import { getOrderFormOptions } from "@/lib/admin/orders";
 import { getNewQuoteForm } from "@/lib/admin/quotes";
 
 export const metadata: Metadata = { title: "Lập báo giá" };
 
-export default async function NewQuotePage({ searchParams }: PageProps<"/admin/bao-gia/moi">) {
+async function NewQuotePage({ searchParams }: PageProps<"/admin/bao-gia/moi">) {
   const [initial, { customers, variants }, { khach }] = await Promise.all([getNewQuoteForm(), getOrderFormOptions(), searchParams]);
   // Mở từ trang khách hàng: ?khach=<id> điền sẵn khách
   const picked = customers.find((c) => c.id === khach);
@@ -15,3 +16,5 @@ export default async function NewQuotePage({ searchParams }: PageProps<"/admin/b
   }
   return <QuoteForm initial={initial} customers={customers} variants={variants} />;
 }
+
+export default withContentSkeleton(NewQuotePage);

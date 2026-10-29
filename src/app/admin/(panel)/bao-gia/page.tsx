@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { QuoteRowAction } from "@/components/admin/QuoteActions";
 import { QuoteFilters } from "@/components/admin/QuoteFilters";
 import { BTN_PRIMARY, Badge, PageHeader, Pagination } from "@/components/admin/ui";
@@ -19,7 +20,7 @@ function Kpi({ label, value, accent = false }: { label: string; value: string; a
   );
 }
 
-export default async function AdminQuotesPage({ searchParams }: PageProps<"/admin/bao-gia">) {
+async function AdminQuotesPage({ searchParams }: PageProps<"/admin/bao-gia">) {
   const query = parseAdminQuoteQuery(await searchParams);
   const { rows, total, page, totalPages, counts, kpi, today } = await getAdminQuotes(query);
   const from = total ? (page - 1) * QUOTE_PAGE_SIZE + 1 : 0;
@@ -161,3 +162,5 @@ export default async function AdminQuotesPage({ searchParams }: PageProps<"/admi
     </>
   );
 }
+
+export default withContentSkeleton(AdminQuotesPage);

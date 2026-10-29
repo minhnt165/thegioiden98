@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { OrderForm } from "@/components/admin/OrderForm";
 import { getOrderFormOptions, type OrderFormData } from "@/lib/admin/orders";
 
@@ -17,7 +18,7 @@ const EMPTY: OrderFormData = {
   reserved: {},
 };
 
-export default async function NewOrderPage({ searchParams }: PageProps<"/admin/don-hang/moi">) {
+async function NewOrderPage({ searchParams }: PageProps<"/admin/don-hang/moi">) {
   const [{ customers, variants }, { khach }] = await Promise.all([getOrderFormOptions(), searchParams]);
   // Mở từ trang khách hàng: ?khach=<id> điền sẵn khách
   const picked = customers.find((c) => c.id === khach);
@@ -30,3 +31,5 @@ export default async function NewOrderPage({ searchParams }: PageProps<"/admin/d
     : EMPTY;
   return <OrderForm initial={initial} customers={customers} variants={variants} />;
 }
+
+export default withContentSkeleton(NewOrderPage);

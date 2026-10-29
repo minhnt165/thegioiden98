@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { RangeSelect } from "@/components/admin/RangeSelect";
 import { RevenueChart } from "@/components/admin/RevenueChart";
 import { BTN_PRIMARY, Badge, Card, PageHeader } from "@/components/admin/ui";
@@ -49,7 +50,7 @@ function Kpi({ label, value, footer }: { label: string; value: string; footer: R
   );
 }
 
-export default async function DashboardPage({ searchParams }: PageProps<"/admin">) {
+async function DashboardPage({ searchParams }: PageProps<"/admin">) {
   const { khoang } = await searchParams;
   const range = khoang === "30" ? 30 : 7;
   const data = await getDashboardData(range);
@@ -204,3 +205,5 @@ export default async function DashboardPage({ searchParams }: PageProps<"/admin"
     </>
   );
 }
+
+export default withContentSkeleton(DashboardPage);

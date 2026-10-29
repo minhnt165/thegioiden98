@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { ProductFilters } from "@/components/admin/ProductFilters";
 import { ProductTable } from "@/components/admin/ProductTable";
 import { BTN_PRIMARY, PageHeader } from "@/components/admin/ui";
@@ -10,7 +11,7 @@ import { productImageUrl } from "@/lib/shop/catalog";
 
 export const metadata: Metadata = { title: "Sản phẩm" };
 
-export default async function AdminProductsPage({ searchParams }: PageProps<"/admin/san-pham">) {
+async function AdminProductsPage({ searchParams }: PageProps<"/admin/san-pham">) {
   const query = parseAdminProductQuery(await searchParams);
   const { rows, total, page, totalPages, counts, variantTotal, categories } = await getAdminProducts(query);
   const from = total ? (page - 1) * ADMIN_PAGE_SIZE + 1 : 0;
@@ -102,3 +103,5 @@ export default async function AdminProductsPage({ searchParams }: PageProps<"/ad
     </>
   );
 }
+
+export default withContentSkeleton(AdminProductsPage);

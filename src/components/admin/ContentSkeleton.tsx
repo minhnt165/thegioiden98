@@ -1,3 +1,21 @@
+import { Suspense, type ReactNode } from "react";
+
+/**
+ * Bọc trang admin trong <Suspense> của riêng trang. Boundary ở layout / loading.tsx không bắt được lúc
+ * chuyển giữa các trang con (layout giữ nguyên), nên thiếu bọc này thì bấm link phải chờ đọc xong dữ liệu
+ * mới chuyển trang (Next báo "uncached data during … a navigation").
+ */
+export function withContentSkeleton<P extends object>(Page: (props: P) => Promise<ReactNode>) {
+  function SuspendedPage(props: P) {
+    return (
+      <Suspense fallback={<ContentSkeleton />}>
+        <Page {...props} />
+      </Suspense>
+    );
+  }
+  return SuspendedPage;
+}
+
 /** Khung chờ phần nội dung admin (lúc tải trang lần đầu và lúc chuyển giữa các trang) */
 export function ContentSkeleton() {
   return (

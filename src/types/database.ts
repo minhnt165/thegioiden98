@@ -32,10 +32,11 @@ export type Database = {
           name: string;
           slug: string;
           parent_id: string | null;
+          description: string | null;
           sort_order: number;
           created_at: string;
         },
-        "id" | "parent_id" | "sort_order" | "created_at",
+        "id" | "parent_id" | "description" | "sort_order" | "created_at",
         [Rel<"categories_parent_id_fkey", "parent_id", "categories">]
       >;
       products: Table<

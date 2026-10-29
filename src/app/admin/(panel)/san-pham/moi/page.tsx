@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { connection } from "next/server";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { ProductForm } from "@/components/admin/product-form/ProductForm";
 import { getCategoryOptions, type ProductFormData } from "@/lib/admin/products";
 
@@ -33,9 +34,11 @@ const EMPTY: ProductFormData = {
   updatedAt: null,
 };
 
-export default async function NewProductPage() {
+async function NewProductPage() {
   // id mới cho mỗi lần mở form: ảnh tải lên trước khi lưu nằm trong thư mục products/<id>/
   await connection();
   const categories = await getCategoryOptions();
   return <ProductForm initial={EMPTY} newId={crypto.randomUUID()} categories={categories} />;
 }
+
+export default withContentSkeleton(NewProductPage);

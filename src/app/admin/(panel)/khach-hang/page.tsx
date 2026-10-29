@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { CustomerFilters } from "@/components/admin/CustomerFilters";
 import { BTN_PRIMARY, PageHeader, Pagination } from "@/components/admin/ui";
 import { CUSTOMER_PAGE_SIZE, adminCustomerSearch, parseAdminCustomerQuery } from "@/lib/admin/customer-filters";
@@ -9,7 +10,7 @@ import { formatDate, formatVND } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Khách hàng" };
 
-export default async function AdminCustomersPage({ searchParams }: PageProps<"/admin/khach-hang">) {
+async function AdminCustomersPage({ searchParams }: PageProps<"/admin/khach-hang">) {
   const query = parseAdminCustomerQuery(await searchParams);
   const { rows, total, page, totalPages } = await getAdminCustomers(query);
   const from = total ? (page - 1) * CUSTOMER_PAGE_SIZE + 1 : 0;
@@ -102,3 +103,5 @@ export default async function AdminCustomersPage({ searchParams }: PageProps<"/a
     </>
   );
 }
+
+export default withContentSkeleton(AdminCustomersPage);
