@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* Design tokens — Thế Giới Đèn 98 */
+@theme {
+  --color-*: initial;
+  --color-cream: #f3efe7;
+  --color-ink: #1b1916;
+  --color-muted: #5e5952;
+  --color-line: #dcd5c7;
+  --color-white: #ffffff;
+  --color-terracotta: #b8612a;
+  --color-glow: #f6e8c9;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Nền ảnh sản phẩm khi chưa có ảnh */
+  --color-swatch-1: #e8dfd0;
+  --color-swatch-2: #d9ded3;
+  --color-swatch-3: #e5d3c8;
+  --color-swatch-4: #dad7d0;
+
+  /* Nút liên hệ */
+  --color-zalo: #0068ff;
+  --color-messenger: #8b2fc9;
+  --color-instagram: #c13584;
+
+  /* Badge trạng thái ở admin (nền nhạt + chữ đậm) */
+  --color-status-amber-bg: #f8ead2;
+  --color-status-amber: #8a5a12;
+  --color-status-blue-bg: #e2eaf6;
+  --color-status-blue: #2c4f80;
+  --color-status-green-bg: #e3eedf;
+  --color-status-green: #3d6630;
+  --color-status-red-bg: #f6e0dc;
+  --color-status-red: #9a3324;
+  --color-status-gray-bg: #ebe7df;
+  --color-status-gray: #5e5952;
+
+  --font-sans: var(--font-be-vietnam), system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), Georgia, serif;
+
+  --radius-input: 10px;
+  --radius-card: 20px;
+  --radius-card-lg: 24px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  a {
+    transition: color 150ms;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-terracotta);
+    outline-offset: 2px;
+  }
+}

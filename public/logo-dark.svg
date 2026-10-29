@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 372 100" width="372" height="100" role="img" aria-label="Thế Giới Đèn 98">
+  <path d="M12 54 A38 38 0 0 1 88 54 Z" fill="#F3EFE7"/>
+  <circle cx="50" cy="66" r="17" fill="#B8612A"/>
+  <path d="M34 92 H66" stroke="#F3EFE7" stroke-width="6" stroke-linecap="round"/>
+  <g font-family="Fraunces, Georgia, serif" letter-spacing="-0.8">
+    <text x="114" y="46" font-size="40" font-weight="400" fill="#F3EFE7">Thế Giới Đèn</text>
+    <text x="114" y="88" font-size="40" font-weight="300" font-style="italic" fill="#B8612A">98</text>
+  </g>
+</svg>

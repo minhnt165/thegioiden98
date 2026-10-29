@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Danh sách sản phẩm – Đèn</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#1B1916}a:hover{color:#B8612A}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #1B1916; background: #F3EFE7; min-height: 100%; display: flex; flex-direction: column;">
+
+  <!-- Header -->
+  <header style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px 32px; padding: 22px 48px; border-bottom: 1px solid #DCD5C7;">
+    <a href="Main.dc.html" aria-label="Thế Giới Đèn 98" style="display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: #1B1916;"><svg aria-hidden="true" viewBox="0 0 100 100" width="40" height="40"><path d="M12 54 A38 38 0 0 1 88 54 Z" fill="#1B1916"></path><circle cx="50" cy="66" r="17" fill="#B8612A"></circle><path d="M34 92 H66" stroke="#1B1916" stroke-width="6" stroke-linecap="round"></path></svg><span style="display: flex; flex-direction: column; line-height: 1;"><span style="font-family: 'Fraunces', Georgia, serif; font-size: 19px; font-weight: 400; letter-spacing: -0.02em;">Thế Giới Đèn</span><span style="font-family: 'Fraunces', Georgia, serif; font-size: 19px; font-weight: 300; font-style: italic; letter-spacing: -0.02em; color: #B8612A;">98</span></span></a>
+    <nav aria-label="Danh mục chính" style="display: flex; flex-wrap: wrap; gap: 8px 32px; font-size: 15px;">
+      <a href="Products.dc.html" style="text-decoration: none; padding: 8px 0; border-bottom: 2px solid #1B1916;">Đèn</a>
+      <a href="Products.dc.html" style="text-decoration: none; padding: 8px 0;">Ghế &amp; Bàn</a>
+      <a href="Products.dc.html" style="text-decoration: none; padding: 8px 0;">Decor</a>
+      <a href="Products.dc.html" style="text-decoration: none; padding: 8px 0;">Bộ sưu tập</a>
+      <a href="Main.dc.html" style="text-decoration: none; padding: 8px 0;">Về chúng tôi</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button type="button" aria-label="Tìm kiếm" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: 0; border-radius: 999px; cursor: pointer; color: #1B1916;">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      </button>
+      <a href="#lien-he" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; background: #1B1916; color: #F3EFE7; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 500;">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"></path></svg>
+        Nhắn Zalo
+      </a>
+    </div>
+  </header>
+
+  <!-- Page title -->
+  <section style="padding: 40px 48px 32px; display: flex; flex-direction: column; gap: 20px;">
+    <nav aria-label="Đường dẫn" style="display: flex; gap: 8px; font-size: 13px; color: #5E5952;">
+      <a href="Main.dc.html" style="text-decoration: none; color: #5E5952;">Trang chủ</a>
+      <span aria-hidden="true">/</span>
+      <span>Đèn</span>
+    </nav>
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+      <h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 64px; line-height: 1; letter-spacing: -0.02em;">Đèn <em style="font-style: italic; color: #B8612A;">— 24 sản phẩm</em></h1>
+      <p style="margin: 0; max-width: 420px; font-size: 15px; line-height: 1.6; color: #5E5952;">Đèn bàn, đèn sàn, đèn thả và đèn tường. Mỗi mẫu đều ghi rõ kích thước, chất liệu và loại bóng.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+      <a href="Products.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; background: #1B1916; color: #F3EFE7; border-radius: 999px; text-decoration: none; font-size: 14px;">Tất cả</a>
+      <a href="Products.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid #DCD5C7; background: #FFFFFF; border-radius: 999px; text-decoration: none; font-size: 14px;">Đèn bàn</a>
+      <a href="Products.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid #DCD5C7; background: #FFFFFF; border-radius: 999px; text-decoration: none; font-size: 14px;">Đèn sàn</a>
+      <a href="Products.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid #DCD5C7; background: #FFFFFF; border-radius: 999px; text-decoration: none; font-size: 14px;">Đèn thả</a>
+      <a href="Products.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid #DCD5C7; background: #FFFFFF; border-radius: 999px; text-decoration: none; font-size: 14px;">Đèn tường</a>
+    </div>
+  </section>
+
+  <!-- Sidebar + grid -->
+  <section style="padding: 0 48px 64px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start;">
+
+    <!-- Filters -->
+    <aside aria-label="Bộ lọc" style="flex: 1 1 240px; max-width: 260px; display: flex; flex-direction: column; gap: 28px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #5E5952;">Chất liệu</span>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #1B1916;"> Gỗ</label>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: #1B1916;"> Gốm</label>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: #1B1916;"> Kim loại</label>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: #1B1916;"> Thủy tinh</label>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: #1B1916;"> Vải &amp; mây tre</label>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #5E5952;">Khoảng giá</span>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="radio" name="gia" style="width: 18px; height: 18px; accent-color: #1B1916;"> Dưới 1.000.000₫</label>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="radio" name="gia" checked style="width: 18px; height: 18px; accent-color: #1B1916;"> 1.000.000₫ – 3.000.000₫</label>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="radio" name="gia" style="width: 18px; height: 18px; accent-color: #1B1916;"> 3.000.000₫ – 6.000.000₫</label>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="radio" name="gia" style="width: 18px; height: 18px; accent-color: #1B1916;"> Trên 6.000.000₫</label>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #5E5952;">Màu sắc</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <button type="button" aria-label="Màu đen" style="width: 32px; height: 32px; border-radius: 999px; background: #1B1916; border: 2px solid #F3EFE7; outline: 2px solid #1B1916; cursor: pointer;"></button>
+          <button type="button" aria-label="Màu kem" style="width: 32px; height: 32px; border-radius: 999px; background: #F6E8C9; border: 1px solid #DCD5C7; cursor: pointer;"></button>
+          <button type="button" aria-label="Màu gỗ" style="width: 32px; height: 32px; border-radius: 999px; background: #B8612A; border: 1px solid #DCD5C7; cursor: pointer;"></button>
+          <button type="button" aria-label="Màu xanh rêu" style="width: 32px; height: 32px; border-radius: 999px; background: #6B7A5E; border: 1px solid #DCD5C7; cursor: pointer;"></button>
+          <button type="button" aria-label="Màu đồng" style="width: 32px; height: 32px; border-radius: 999px; background: #C8A26A; border: 1px solid #DCD5C7; cursor: pointer;"></button>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #5E5952;">Tình trạng</span>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #1B1916;"> Còn hàng</label>
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 15px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: #1B1916;"> Đặt trước (2–3 tuần)</label>
+      </div>
+      <button type="button" style="height: 44px; border: 1px solid #1B1916; background: transparent; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;">Xóa bộ lọc</button>
+    </aside>
+
+    <!-- Grid -->
+    <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <span style="font-size: 14px; color: #5E5952;">Hiển thị 1–12 trong 24 sản phẩm</span>
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #5E5952;">Sắp xếp
+          <select style="height: 40px; padding: 0 14px; border: 1px solid #DCD5C7; border-radius: 999px; background: #FFFFFF; font: inherit; font-size: 14px; color: #1B1916;">
+            <option>Nổi bật</option>
+            <option>Mới nhất</option>
+            <option>Giá thấp → cao</option>
+            <option>Giá cao → thấp</option>
+          </select>
+        </label>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+        <sc-for list="{{products}}" as="p" hint-placeholder-count="12">
+          <a href="ProductDetail.dc.html" style="display: flex; flex-direction: column; gap: 14px; text-decoration: none; min-width: 0;">
+            <div style="aspect-ratio: 4 / 5; border-radius: 20px; background: {{p.tint}}; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+              <sc-if value="{{p.isLamp}}" hint-placeholder-val="{{true}}">
+                <svg aria-hidden="true" viewBox="0 0 200 240" width="150" height="180"><ellipse cx="100" cy="125" rx="70" ry="55" fill="#F6E8C9"></ellipse><path d="M60 40 L140 40 L162 125 L38 125 Z" fill="#1B1916"></path><rect x="96" y="125" width="8" height="75" fill="#1B1916"></rect><ellipse cx="100" cy="205" rx="38" ry="9" fill="#1B1916"></ellipse></svg>
+              </sc-if>
+              <sc-if value="{{p.isFloor}}" hint-placeholder-val="{{false}}">
+                <svg aria-hidden="true" viewBox="0 0 200 240" width="150" height="180"><path d="M50 215 Q50 40 150 40" fill="none" stroke="#1B1916" stroke-width="7" stroke-linecap="round"></path><path d="M126 40 L174 40 L186 84 L114 84 Z" fill="#1B1916"></path><rect x="28" y="212" width="46" height="9" rx="4" fill="#1B1916"></rect></svg>
+              </sc-if>
+              <sc-if value="{{p.isPendant}}" hint-placeholder-val="{{false}}">
+                <svg aria-hidden="true" viewBox="0 0 200 240" width="150" height="180"><path d="M100 10 V95" stroke="#1B1916" stroke-width="3"></path><path d="M55 95 H145 L170 165 H30 Z" fill="#1B1916"></path><circle cx="100" cy="178" r="16" fill="#F6E8C9"></circle></svg>
+              </sc-if>
+              <sc-if value="{{p.isWall}}" hint-placeholder-val="{{false}}">
+                <svg aria-hidden="true" viewBox="0 0 200 240" width="150" height="180"><path d="M40 60 H110" stroke="#1B1916" stroke-width="8" stroke-linecap="round"></path><path d="M40 60 V180" stroke="#1B1916" stroke-width="8" stroke-linecap="round"></path><path d="M110 60 A48 48 0 0 1 110 156" fill="#1B1916"></path><circle cx="128" cy="108" r="14" fill="#F6E8C9"></circle></svg>
+              </sc-if>
+              <sc-if value="{{p.badge}}" hint-placeholder-val="{{false}}">
+                <span style="position: absolute; top: 14px; left: 14px; padding: 6px 10px; background: #1B1916; color: #F3EFE7; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 999px;">{{p.badge}}</span>
+              </sc-if>
+              <button type="button" aria-label="Lưu vào yêu thích" style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 999px; background: #FFFFFF; border: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #1B1916;">
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg>
+              </button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <span style="font-size: 16px; font-weight: 500; color: #1B1916;">{{p.name}}</span>
+              <span style="font-size: 13px; color: #5E5952;">{{p.meta}}</span>
+              <span style="font-size: 15px; color: #1B1916; margin-top: 4px;">{{p.price}}</span>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+
+      <nav aria-label="Phân trang" style="display: flex; justify-content: center; gap: 8px; padding-top: 24px;">
+        <a href="Products.dc.html" aria-current="page" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; background: #1B1916; color: #F3EFE7; text-decoration: none; font-size: 14px;">1</a>
+        <a href="Products.dc.html" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid #DCD5C7; background: #FFFFFF; text-decoration: none; font-size: 14px;">2</a>
+        <a href="Products.dc.html" aria-label="Trang sau" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid #DCD5C7; background: #FFFFFF; text-decoration: none; font-size: 14px;">→</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="lien-he" style="margin-top: auto; padding: 48px 48px 40px; border-top: 1px solid #DCD5C7; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <span aria-label="Thế Giới Đèn 98" style="display: inline-flex; align-items: center; gap: 13px; text-decoration: none; color: #1B1916;"><svg aria-hidden="true" viewBox="0 0 100 100" width="44" height="44"><path d="M12 54 A38 38 0 0 1 88 54 Z" fill="#1B1916"></path><circle cx="50" cy="66" r="17" fill="#B8612A"></circle><path d="M34 92 H66" stroke="#1B1916" stroke-width="6" stroke-linecap="round"></path></svg><span style="display: flex; flex-direction: column; line-height: 1;"><span style="font-family: 'Fraunces', Georgia, serif; font-size: 20px; font-weight: 400; letter-spacing: -0.02em;">Thế Giới Đèn</span><span style="font-family: 'Fraunces', Georgia, serif; font-size: 20px; font-weight: 300; font-style: italic; letter-spacing: -0.02em; color: #B8612A;">98</span></span></span>
+      <span style="font-size: 13px; color: #5E5952;">© 2026 Thế Giới Đèn 98. Showroom: An Khánh, Hà Nội · 9h–17h.</span>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+      <a href="#lien-he" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; background: #0068FF; color: #FFFFFF; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 500;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"></path><path d="M9 9h6M9 12h4"></path></svg>Zalo: [SĐT]</a>
+      <a href="#lien-he" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; background: #8B2FC9; color: #FFFFFF; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 500;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 8 0 0 0-9 8c0 2.6 1.3 4.9 3.3 6.4V21l3.2-1.8A10 10 0 0 0 12 19a9 8 0 0 0 0-16z"></path><circle cx="8.5" cy="11" r="0.9" fill="currentColor"></circle><circle cx="12" cy="11" r="0.9" fill="currentColor"></circle><circle cx="15.5" cy="11" r="0.9" fill="currentColor"></circle></svg>Messenger</a>
+      <a href="#lien-he" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; background: #C13584; color: #FFFFFF; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 500;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>Instagram</a>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2160}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const raw = [
+      { name: 'Đèn bàn Mộc', meta: 'Gỗ sồi · vải lanh', price: '1.890.000₫', tint: '#E8DFD0', kind: 'lamp', badge: 'Bán chạy' },
+      { name: 'Đèn sàn Vòm', meta: 'Thép sơn tĩnh điện', price: '3.450.000₫', tint: '#D9DED3', kind: 'floor', badge: 'Mới' },
+      { name: 'Đèn thả Gốm Sứ', meta: 'Gốm men mờ', price: '2.150.000₫', tint: '#E5D3C8', kind: 'pendant', badge: '' },
+      { name: 'Đèn tường Lưỡi Liềm', meta: 'Đồng thau xước', price: '1.650.000₫', tint: '#DAD7D0', kind: 'wall', badge: '' },
+      { name: 'Đèn bàn Giọt', meta: 'Thủy tinh thổi tay', price: '2.400.000₫', tint: '#D9DED3', kind: 'lamp', badge: '' },
+      { name: 'Đèn sàn Tre', meta: 'Mây tre đan tay', price: '2.900.000₫', tint: '#E8DFD0', kind: 'floor', badge: '' },
+      { name: 'Đèn thả Chuông', meta: 'Nhôm sơn mờ', price: '1.250.000₫', tint: '#DAD7D0', kind: 'pendant', badge: '' },
+      { name: 'Đèn bàn Nấm', meta: 'Gốm men bóng', price: '1.450.000₫', tint: '#E5D3C8', kind: 'lamp', badge: 'Mới' },
+      { name: 'Đèn tường Lá', meta: 'Thép uốn · vải', price: '980.000₫', tint: '#D9DED3', kind: 'wall', badge: '' },
+      { name: 'Đèn sàn Ba Chân', meta: 'Gỗ tần bì · vải lanh', price: '3.900.000₫', tint: '#E5D3C8', kind: 'floor', badge: '' },
+      { name: 'Đèn thả Đôi', meta: 'Thủy tinh mờ', price: '2.750.000₫', tint: '#E8DFD0', kind: 'pendant', badge: '' },
+      { name: 'Đèn bàn Cong', meta: 'Đồng thau · đá cẩm thạch', price: '3.200.000₫', tint: '#DAD7D0', kind: 'lamp', badge: '' }
+    ];
+    const products = raw.map((p) => ({
+      ...p,
+      isLamp: p.kind === 'lamp',
+      isFloor: p.kind === 'floor',
+      isPendant: p.kind === 'pendant',
+      isWall: p.kind === 'wall'
+    }));
+    return { products };
+  }
+}
+</script>
+</body>
+</html>

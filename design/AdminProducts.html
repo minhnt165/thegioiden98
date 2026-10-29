@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Admin – Sản phẩm</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#1B1916}a:hover{color:#B8612A}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #1B1916; background: #F3EFE7; min-height: 100%; display: flex; flex-wrap: wrap; align-items: stretch;">
+
+  <!-- Sidebar -->
+  <aside aria-label="Menu quản trị" style="flex: 1 1 240px; max-width: 240px; background: #1B1916; color: #F3EFE7; padding: 24px 16px; display: flex; flex-direction: column; gap: 28px;">
+    <a href="AdminDashboard.dc.html" aria-label="Thế Giới Đèn 98 – trang quản trị" style="display: inline-flex; align-items: center; gap: 10px; padding: 0 8px; text-decoration: none; color: #F3EFE7;">
+      <svg aria-hidden="true" viewBox="0 0 100 100" width="34" height="34"><path d="M12 54 A38 38 0 0 1 88 54 Z" fill="#F3EFE7"></path><circle cx="50" cy="66" r="17" fill="#B8612A"></circle><path d="M34 92 H66" stroke="#F3EFE7" stroke-width="6" stroke-linecap="round"></path></svg>
+      <span style="display: flex; flex-direction: column; line-height: 1;"><span style="font-family: 'Fraunces', Georgia, serif; font-size: 16px;">Thế Giới Đèn</span><span style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; margin-top: 4px;">Kênh người bán</span></span>
+    </a>
+    <nav style="display: flex; flex-direction: column; gap: 2px; font-size: 14px;">
+      <a href="AdminDashboard.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #F3EFE7; text-decoration: none; opacity: 0.85;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="2"></rect><rect x="13" y="3" width="8" height="8" rx="2"></rect><rect x="3" y="13" width="8" height="8" rx="2"></rect><rect x="13" y="13" width="8" height="8" rx="2"></rect></svg>Tổng quan</a>
+      <a href="AdminOrders.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #F3EFE7; text-decoration: none; opacity: 0.85;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16l-1.5 12h-13z"></path><path d="M9 7a3 3 0 0 1 6 0"></path></svg>Đơn hàng<span style="margin-left: auto; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px; background: #B8612A; color: #FFFFFF; font-size: 12px; display: inline-flex; align-items: center; justify-content: center;">3</span></a>
+      <a href="AdminQuotes.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #F3EFE7; text-decoration: none; opacity: 0.85;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"></path><path d="M9 12h7M9 16h7M14 3v5h5"></path></svg>Báo giá</a>
+      <a href="AdminProducts.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; background: rgba(243,239,231,0.12); color: #F3EFE7; text-decoration: none; font-weight: 500;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"></path><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"></path></svg>Sản phẩm</a>
+      <a href="AdminProducts.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #F3EFE7; text-decoration: none; opacity: 0.85;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"></path></svg>Danh mục</a>
+      <a href="AdminOrders.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #F3EFE7; text-decoration: none; opacity: 0.85;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>Khách hàng</a>
+      <a href="AdminDashboard.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #F3EFE7; text-decoration: none; opacity: 0.85;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10l9-6 9 6v10H3z"></path><path d="M9 20v-6h6v6"></path></svg>Khuyến mãi</a>
+      <a href="AdminDashboard.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #F3EFE7; text-decoration: none; opacity: 0.85;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"></path></svg>Thống kê</a>
+      <a href="AdminDashboard.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #F3EFE7; text-decoration: none; opacity: 0.85;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"></path></svg>Cài đặt</a>
+    </nav>
+    <a href="Main.dc.html" style="margin-top: auto; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 12px; border: 1px solid rgba(243,239,231,0.3); border-radius: 12px; color: #F3EFE7; text-decoration: none; font-size: 13px;">Xem cửa hàng →</a>
+  </aside>
+
+  <!-- Content -->
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: 30px; letter-spacing: -0.01em;">Sản phẩm</h1>
+        <span style="font-size: 13px; color: #5E5952;">38 sản phẩm · 112 phân loại</span>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button type="button" style="height: 42px; padding: 0 16px; background: #FFFFFF; border: 1px solid #DCD5C7; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;">Nhập Excel</button>
+        <a href="AdminProductEdit.dc.html" style="display: inline-flex; align-items: center; height: 42px; padding: 0 16px; background: #1B1916; color: #F3EFE7; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 500;">+ Thêm sản phẩm</a>
+      </div>
+    </div>
+
+    <nav aria-label="Trạng thái sản phẩm" style="display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #DCD5C7;">
+      <a href="AdminProducts.dc.html" aria-current="page" style="padding: 12px 14px; font-size: 14px; font-weight: 500; text-decoration: none; border-bottom: 2px solid #B8612A; margin-bottom: -1px;">Tất cả <span style="color: #B8612A;">38</span></a>
+      <a href="AdminProducts.dc.html" style="padding: 12px 14px; font-size: 14px; text-decoration: none; color: #5E5952;">Đang bán <span style="color: #1B1916;">31</span></a>
+      <a href="AdminProducts.dc.html" style="padding: 12px 14px; font-size: 14px; text-decoration: none; color: #5E5952;">Hết hàng <span style="color: #1B1916;">2</span></a>
+      <a href="AdminProducts.dc.html" style="padding: 12px 14px; font-size: 14px; text-decoration: none; color: #5E5952;">Đã ẩn <span style="color: #1B1916;">4</span></a>
+      <a href="AdminProducts.dc.html" style="padding: 12px 14px; font-size: 14px; text-decoration: none; color: #5E5952;">Nháp <span style="color: #1B1916;">1</span></a>
+    </nav>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+      <label style="flex: 1 1 260px; display: flex; align-items: center; gap: 8px; height: 42px; padding: 0 14px; background: #FFFFFF; border: 1px solid #DCD5C7; border-radius: 10px;">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E5952" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Tìm sản phẩm</span>
+        <input type="search" placeholder="Tên sản phẩm, SKU…" style="flex: 1 1 0; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 14px;">
+      </label>
+      <select aria-label="Danh mục" style="height: 42px; padding: 0 12px; border: 1px solid #DCD5C7; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 14px;"><option>Mọi danh mục</option><option>Đèn bàn</option><option>Đèn sàn</option><option>Đèn thả</option><option>Ghế &amp; Bàn</option><option>Decor</option></select>
+      <select aria-label="Tồn kho" style="height: 42px; padding: 0 12px; border: 1px solid #DCD5C7; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 14px;"><option>Mọi mức tồn</option><option>Sắp hết (≤ 3)</option><option>Hết hàng</option></select>
+      <select aria-label="Sắp xếp" style="height: 42px; padding: 0 12px; border: 1px solid #DCD5C7; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 14px;"><option>Mới cập nhật</option><option>Bán chạy</option><option>Giá tăng dần</option><option>Giá giảm dần</option></select>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DCD5C7; border-radius: 16px; overflow-x: auto;">
+      <table style="width: 100%; min-width: 980px; border-collapse: collapse; font-size: 14px;">
+        <thead>
+          <tr style="background: #F3EFE7; color: #5E5952; font-size: 12px; text-align: left;">
+            <th style="padding: 12px 16px; font-weight: 500;"><input type="checkbox" aria-label="Chọn tất cả" style="width: 16px; height: 16px; accent-color: #1B1916;"></th>
+            <th style="padding: 12px 8px; font-weight: 500;">Sản phẩm</th>
+            <th style="padding: 12px 8px; font-weight: 500;">Danh mục</th>
+            <th style="padding: 12px 8px; font-weight: 500;">Phân loại</th>
+            <th style="padding: 12px 8px; font-weight: 500; text-align: right;">Giá</th>
+            <th style="padding: 12px 8px; font-weight: 500; text-align: right;">Tồn kho</th>
+            <th style="padding: 12px 8px; font-weight: 500; text-align: right;">Đã bán</th>
+            <th style="padding: 12px 8px; font-weight: 500;">Hiển thị</th>
+            <th style="padding: 12px 16px; font-weight: 500;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <sc-for list="{{products}}" as="p" hint-placeholder-count="7">
+            <tr style="border-top: 1px solid #EEE9DF;">
+              <td style="padding: 14px 16px;"><input type="checkbox" aria-label="Chọn sản phẩm" style="width: 16px; height: 16px; accent-color: #1B1916;"></td>
+              <td style="padding: 14px 8px;"><span style="display: flex; align-items: center; gap: 12px;"><span style="width: 48px; height: 48px; border-radius: 10px; background: {{p.tint}}; flex: 0 0 auto;"></span><span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-weight: 500;">{{p.name}}</span><span style="font-size: 12px; color: #5E5952;">SKU {{p.sku}}</span></span></span></td>
+              <td style="padding: 14px 8px; font-size: 13px;">{{p.cat}}</td>
+              <td style="padding: 14px 8px; font-size: 13px; color: #5E5952;">{{p.variants}}</td>
+              <td style="padding: 14px 8px; text-align: right;">{{p.price}}</td>
+              <td style="padding: 14px 8px; text-align: right; color: {{p.stockColor}}; font-weight: 500;">{{p.stock}}</td>
+              <td style="padding: 14px 8px; text-align: right; color: #5E5952;">{{p.sold}}</td>
+              <td style="padding: 14px 8px;"><button type="button" aria-label="Bật tắt hiển thị" onClick="{{p.toggle}}" style="width: 44px; height: 24px; border-radius: 999px; border: 0; background: {{p.toggleBg}}; position: relative; cursor: pointer; padding: 0;"><span style="position: absolute; top: 3px; left: {{p.knobLeft}}; width: 18px; height: 18px; border-radius: 999px; background: #FFFFFF;"></span></button></td>
+              <td style="padding: 14px 16px; text-align: right; white-space: nowrap;"><a href="AdminProductEdit.dc.html" style="display: inline-flex; align-items: center; height: 34px; padding: 0 12px; background: #FFFFFF; border: 1px solid #DCD5C7; border-radius: 8px; text-decoration: none; font-size: 13px;">Sửa</a> <button type="button" aria-label="Thêm tùy chọn" style="width: 34px; height: 34px; margin-left: 6px; background: #FFFFFF; border: 1px solid #DCD5C7; border-radius: 8px; font: inherit; font-size: 16px; cursor: pointer;">⋯</button></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #5E5952;">
+      <span>Hiển thị 1–7 trong 38 sản phẩm</span>
+      <nav aria-label="Phân trang" style="display: flex; gap: 6px;">
+        <a href="AdminProducts.dc.html" aria-current="page" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: #1B1916; color: #F3EFE7; text-decoration: none;">1</a>
+        <a href="AdminProducts.dc.html" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; border: 1px solid #DCD5C7; background: #FFFFFF; text-decoration: none;">2</a>
+        <a href="AdminProducts.dc.html" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; border: 1px solid #DCD5C7; background: #FFFFFF; text-decoration: none;">3</a>
+      </nav>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { hidden: { 'DB-004': true } };
+  }
+  renderVals() {
+    const raw = [
+      { sku: 'DB-001', name: 'Đèn bàn Mộc', cat: 'Đèn bàn', variants: '4 màu · 2 cỡ', price: '1.890.000₫', stock: 7, sold: 42, tint: '#E8DFD0' },
+      { sku: 'DS-002', name: 'Đèn sàn Vòm', cat: 'Đèn sàn', variants: '2 màu', price: '3.450.000₫', stock: 2, sold: 18, tint: '#D9DED3' },
+      { sku: 'DT-003', name: 'Đèn thả Gốm Sứ', cat: 'Đèn thả', variants: '1', price: '2.150.000₫', stock: 0, sold: 25, tint: '#E5D3C8' },
+      { sku: 'DB-004', name: 'Đèn bàn Nấm', cat: 'Đèn bàn', variants: '3 màu', price: '1.450.000₫', stock: 12, sold: 9, tint: '#E5D3C8' },
+      { sku: 'GH-005', name: 'Ghế thư giãn Nắng', cat: 'Ghế & Bàn', variants: '2 chất liệu', price: '5.900.000₫', stock: 4, sold: 6, tint: '#DAD7D0' },
+      { sku: 'DC-006', name: 'Bình gốm Sa Mạc', cat: 'Decor', variants: '3 cỡ', price: '650.000₫', stock: 23, sold: 61, tint: '#E5D3C8' },
+      { sku: 'BA-007', name: 'Bàn cà phê Tròn', cat: 'Ghế & Bàn', variants: '1', price: '4.200.000₫', stock: 3, sold: 4, tint: '#E8DFD0' }
+    ];
+    const hidden = this.state.hidden;
+    const products = raw.map((p) => {
+      const off = !!hidden[p.sku];
+      return {
+        ...p,
+        stock: p.stock === 0 ? 'Hết' : String(p.stock),
+        stockColor: p.stock === 0 ? '#A33A3A' : (p.stock <= 3 ? '#8A4714' : '#1B1916'),
+        toggleBg: off ? '#DCD5C7' : '#3B7A57',
+        knobLeft: off ? '3px' : '23px',
+        toggle: () => this.setState({ hidden: { ...hidden, [p.sku]: !off } })
+      };
+    });
+    return { products };
+  }
+}
+</script>
+</body>
+</html>
