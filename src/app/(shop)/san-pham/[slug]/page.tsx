@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: PageProps<"/san-pham/[slug]">
   return {
     title: product.name,
     description: product.seoDescription ?? plainText(product.description, 160),
+    alternates: { canonical: `/san-pham/${product.slug}` },
   };
 }
 

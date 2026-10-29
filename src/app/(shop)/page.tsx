@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductArt, artKindFor } from "@/components/shop/ProductArt";
@@ -7,6 +8,8 @@ import { getCatalog, productImageUrl, type CatalogProduct } from "@/lib/shop/cat
 import { GENERAL_MESSAGE, messengerLink, zaloLink } from "@/lib/shop/contact";
 import { COLORS, SPACES, applyFilters, parseFilters } from "@/lib/shop/filters";
 import { getShopSettings } from "@/lib/shop/settings";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 // Icon 5 ô danh mục (nét mảnh, theo mockup)
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {

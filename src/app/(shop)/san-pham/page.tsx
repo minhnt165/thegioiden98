@@ -7,6 +7,7 @@ import { SPACES, parseFilters, type SearchParamsRecord } from "@/lib/shop/filter
 export const metadata: Metadata = {
   title: "Tất cả sản phẩm",
   description: "Đèn bàn, đèn sàn, đèn thả, ghế bàn và đồ decor — lọc theo chất liệu, khoảng giá, màu sắc.",
+  alternates: { canonical: "/san-pham" },
 };
 
 async function AllProducts({ searchParams }: { searchParams: Promise<SearchParamsRecord> }) {

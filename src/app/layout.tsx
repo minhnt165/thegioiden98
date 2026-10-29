@@ -24,6 +24,8 @@ export const metadata: Metadata = {
   },
   description:
     "Đèn bàn, đèn sàn, đèn thả, ghế bàn và đồ decor chọn lọc từ xưởng thủ công. Showroom An Khánh, Hà Nội.",
+  // Ảnh chia sẻ: app/opengraph-image.tsx (mặc định) và san-pham/[slug]/opengraph-image.tsx (từng sản phẩm)
+  openGraph: { siteName: "Thế Giới Đèn 98", locale: "vi_VN", type: "website" },
 };
 
 export const viewport: Viewport = {

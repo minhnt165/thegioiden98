@@ -9,7 +9,8 @@ export async function generateMetadata({ params }: PageProps<"/danh-muc/[slug]">
   const { slug } = await params;
   const category = (await getCategories()).find((c) => c.slug === slug);
   if (!category) return { title: "Không tìm thấy danh mục" };
-  return { title: category.name, description: category.description ?? undefined };
+  // Trang lọc (?chat-lieu=…) trỏ canonical về trang danh mục gốc
+  return { title: category.name, description: category.description ?? undefined, alternates: { canonical: `/danh-muc/${category.slug}` } };
 }
 
 /** Chip: danh mục cha → các danh mục con; danh mục con → anh em cùng cha */
