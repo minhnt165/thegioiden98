@@ -206,6 +206,7 @@ export type Database = {
           code: string;
           customer_id: string | null;
           status: Database["public"]["Enums"]["quote_status"];
+          channel: Database["public"]["Enums"]["sales_channel"];
           message: string | null;
           terms: string | null;
           discount_percent: number;
@@ -227,6 +228,7 @@ export type Database = {
         | "code"
         | "customer_id"
         | "status"
+        | "channel"
         | "message"
         | "terms"
         | "discount_percent"
@@ -310,17 +312,48 @@ export type Database = {
         };
         Relationships: [Rel<"orders_customer_id_fkey", "customer_id", "customers">];
       };
+      quote_list: {
+        Row: {
+          id: string | null;
+          code: string | null;
+          status: Database["public"]["Enums"]["quote_status"] | null;
+          channel: Database["public"]["Enums"]["sales_channel"] | null;
+          subtotal: number | null;
+          total: number | null;
+          valid_until: string | null;
+          view_count: number | null;
+          sent_at: string | null;
+          viewed_at: string | null;
+          accepted_at: string | null;
+          order_id: string | null;
+          created_at: string | null;
+          customer_id: string | null;
+          customer_name: string | null;
+          customer_phone: string | null;
+          items_summary: string | null;
+          search: string | null;
+        };
+        Relationships: [Rel<"quotes_customer_id_fkey", "customer_id", "customers">];
+      };
     };
     Functions: {
+      admin_quote_to_order: {
+        Args: { p_id: string; p_payment?: Database["public"]["Enums"]["payment_method"] };
+        Returns: Json;
+      };
       admin_save_order: { Args: { p: Json }; Returns: Json };
       admin_save_product: { Args: { p: Json }; Returns: string };
+      admin_save_quote: { Args: { p: Json }; Returns: Json };
       admin_set_order_status: {
         Args: { p_ids: string[]; p_status: Database["public"]["Enums"]["order_status"]; p_note?: string };
         Returns: number;
       };
       is_admin: { Args: never; Returns: boolean };
       is_product_active: { Args: { p_product_id: string }; Returns: boolean };
+      public_accept_quote: { Args: { p_token: string }; Returns: Json };
+      public_view_quote: { Args: { p_token: string }; Returns: undefined };
       variant_label: { Args: { p_variant_id: string }; Returns: string };
+      vn_today: { Args: never; Returns: string };
     };
     Enums: {
       product_status: "draft" | "active" | "hidden";

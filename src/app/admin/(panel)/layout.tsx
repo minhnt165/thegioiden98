@@ -12,12 +12,17 @@ import { createClient } from "@/lib/supabase/server";
 async function SidebarNav() {
   const user = await getCurrentUser();
   let pendingOrders = 0;
+  let waitingQuotes = 0;
   if (user?.role === "admin") {
     const supabase = await createClient();
-    const { count } = await supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "pending");
-    pendingOrders = count ?? 0;
+    const [orders, quotes] = await Promise.all([
+      supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "pending"),
+      supabase.from("quote_list").select("id", { count: "exact", head: true }).in("status", ["sent", "viewed"]),
+    ]);
+    pendingOrders = orders.count ?? 0;
+    waitingQuotes = quotes.count ?? 0;
   }
-  return <AdminNav pendingOrders={pendingOrders} />;
+  return <AdminNav pendingOrders={pendingOrders} waitingQuotes={waitingQuotes} />;
 }
 
 async function SidebarAccount() {

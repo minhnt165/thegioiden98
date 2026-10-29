@@ -377,3 +377,6 @@ update public.quotes q set
   terms = (select value #>> '{}' from public.settings where key = 'quote_default_terms')
 from (select quote_id, sum(unit_price * qty)::bigint as subtotal from public.quote_items group by quote_id) s
 where s.quote_id = q.id;
+
+-- Kênh của báo giá theo kênh khách (cột thêm ở migration 007)
+update public.quotes q set channel = c.channel from public.customers c where c.id = q.customer_id;

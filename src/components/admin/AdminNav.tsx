@@ -10,7 +10,7 @@ type NavItem = { href: string; label: string; icon: LucideIcon; soon?: boolean; 
 const NAV: NavItem[] = [
   { href: "/admin", label: "Tổng quan", icon: LayoutGrid, exact: true },
   { href: "/admin/don-hang", label: "Đơn hàng", icon: ShoppingBag },
-  { href: "/admin/bao-gia", label: "Báo giá", icon: FileText, soon: true },
+  { href: "/admin/bao-gia", label: "Báo giá", icon: FileText },
   { href: "/admin/san-pham", label: "Sản phẩm", icon: Package },
   { href: "/admin/khach-hang", label: "Khách hàng", icon: Users, soon: true },
   { href: "/admin/cai-dat", label: "Cài đặt", icon: Settings },
@@ -19,7 +19,15 @@ const NAV: NavItem[] = [
 const ITEM =
   "flex h-11 shrink-0 items-center gap-3 rounded-xl px-3 text-[14px] text-cream lg:shrink";
 
-function NavList({ isActive, pendingOrders }: { isActive: (item: NavItem) => boolean; pendingOrders?: number }) {
+function NavList({
+  isActive,
+  pendingOrders,
+  waitingQuotes,
+}: {
+  isActive: (item: NavItem) => boolean;
+  pendingOrders?: number;
+  waitingQuotes?: number;
+}) {
   return (
     <nav aria-label="Menu quản trị" className="flex gap-0.5 overflow-x-auto overflow-y-hidden [scrollbar-width:none] lg:flex-col lg:overflow-visible [&::-webkit-scrollbar]:hidden">
       {NAV.map((item) => {
@@ -50,6 +58,12 @@ function NavList({ isActive, pendingOrders }: { isActive: (item: NavItem) => boo
                 <span className="sr-only"> đơn chờ xác nhận</span>
               </span>
             )}
+            {item.href === "/admin/bao-gia" && waitingQuotes ? (
+              <span className="ml-auto inline-flex h-5.5 min-w-5.5 items-center justify-center rounded-full bg-cream/20 px-1.5 text-[12px]">
+                {waitingQuotes}
+                <span className="sr-only"> báo giá đang chờ khách</span>
+              </span>
+            ) : null}
           </Link>
         );
       })}
@@ -57,11 +71,11 @@ function NavList({ isActive, pendingOrders }: { isActive: (item: NavItem) => boo
   );
 }
 
-export function AdminNav({ pendingOrders }: { pendingOrders?: number }) {
+export function AdminNav({ pendingOrders, waitingQuotes }: { pendingOrders?: number; waitingQuotes?: number }) {
   const pathname = usePathname();
   const isActive = (item: NavItem) =>
     item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`);
-  return <NavList isActive={isActive} pendingOrders={pendingOrders} />;
+  return <NavList isActive={isActive} pendingOrders={pendingOrders} waitingQuotes={waitingQuotes} />;
 }
 
 /** Bản không đánh dấu mục đang chọn, hiện trong lúc chờ (prerender) */

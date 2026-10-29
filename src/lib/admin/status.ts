@@ -21,6 +21,16 @@ export const ORDER_STATUS: Record<Enums<"order_status">, { label: string; tone: 
   returned: { label: "Đổi trả", tone: "red" },
 };
 
+export const QUOTE_STATUS: Record<Enums<"quote_status">, { label: string; tone: Tone }> = {
+  draft: { label: "Nháp", tone: "gray" },
+  sent: { label: "Đã gửi", tone: "blue" },
+  viewed: { label: "Khách đã xem", tone: "amber" },
+  accepted: { label: "Khách đồng ý", tone: "green" },
+  ordered: { label: "Đã thành đơn", tone: "green" },
+  expired: { label: "Hết hạn", tone: "red" },
+  rejected: { label: "Khách từ chối", tone: "gray" },
+};
+
 export const PRODUCT_STATUS: Record<Enums<"product_status">, { label: string; tone: Tone }> = {
   active: { label: "Đang bán", tone: "green" },
   hidden: { label: "Đã ẩn", tone: "gray" },
