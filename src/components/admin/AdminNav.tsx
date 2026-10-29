@@ -12,7 +12,7 @@ const NAV: NavItem[] = [
   { href: "/admin/don-hang", label: "Đơn hàng", icon: ShoppingBag },
   { href: "/admin/bao-gia", label: "Báo giá", icon: FileText },
   { href: "/admin/san-pham", label: "Sản phẩm", icon: Package },
-  { href: "/admin/khach-hang", label: "Khách hàng", icon: Users, soon: true },
+  { href: "/admin/khach-hang", label: "Khách hàng", icon: Users },
   { href: "/admin/cai-dat", label: "Cài đặt", icon: Settings },
 ];
 

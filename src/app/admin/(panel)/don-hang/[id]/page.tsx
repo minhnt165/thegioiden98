@@ -130,7 +130,9 @@ export default async function OrderDetailPage({ params }: PageProps<"/admin/don-
           <Card title="Khách hàng">
             {order.customer ? (
               <div className="flex flex-col gap-1.5 text-[14px]">
-                <span className="font-medium">{order.customer.name}</span>
+                <Link href={`/admin/khach-hang/${order.customer.id}`} className="font-medium hover:text-terracotta">
+                  {order.customer.name}
+                </Link>
                 {order.customer.phone && (
                   <span className="flex flex-wrap items-center gap-3">
                     <a href={`tel:${order.customer.phone.replace(/[^\d+]/g, "")}`} className="underline-offset-4 hover:underline">

@@ -398,8 +398,8 @@ export function QuoteForm({ initial, customers, variants, flash = null }: Props)
             {customer.id ? (
               <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-muted">
                 Khách cũ — sửa ở đây sẽ cập nhật hồ sơ khách ·
-                <Link href={`/admin/don-hang?q=${encodeURIComponent(customer.phone || customer.name)}`} target="_blank" className="text-ink underline-offset-4 hover:underline">
-                  Xem đơn trước
+                <Link href={`/admin/khach-hang/${customer.id}`} target="_blank" className="text-ink underline-offset-4 hover:underline">
+                  Xem lịch sử khách
                 </Link>
                 {editable && (
                   <button

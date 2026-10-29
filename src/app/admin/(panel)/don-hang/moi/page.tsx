@@ -17,7 +17,16 @@ const EMPTY: OrderFormData = {
   reserved: {},
 };
 
-export default async function NewOrderPage() {
-  const { customers, variants } = await getOrderFormOptions();
-  return <OrderForm initial={EMPTY} customers={customers} variants={variants} />;
+export default async function NewOrderPage({ searchParams }: PageProps<"/admin/don-hang/moi">) {
+  const [{ customers, variants }, { khach }] = await Promise.all([getOrderFormOptions(), searchParams]);
+  // Mở từ trang khách hàng: ?khach=<id> điền sẵn khách
+  const picked = customers.find((c) => c.id === khach);
+  const initial: OrderFormData = picked
+    ? {
+        ...EMPTY,
+        customer: { id: picked.id, name: picked.name, phone: picked.phone ?? "", address: picked.address ?? "" },
+        channel: picked.channel,
+      }
+    : EMPTY;
+  return <OrderForm initial={initial} customers={customers} variants={variants} />;
 }

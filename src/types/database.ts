@@ -335,6 +335,24 @@ export type Database = {
         };
         Relationships: [Rel<"quotes_customer_id_fkey", "customer_id", "customers">];
       };
+      customer_list: {
+        Row: {
+          id: string | null;
+          name: string | null;
+          phone: string | null;
+          address: string | null;
+          channel: Database["public"]["Enums"]["sales_channel"] | null;
+          note: string | null;
+          created_at: string | null;
+          order_count: number | null;
+          total_spent: number | null;
+          last_order_at: string | null;
+          quote_count: number | null;
+          open_quote_count: number | null;
+          search: string | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
       admin_quote_to_order: {
