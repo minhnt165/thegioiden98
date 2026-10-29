@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4000",
+    "dev": "cross-env NODE_OPTIONS=--use-system-ca next dev -p 4000",
     "build": "next build",
     "start": "next start -p 4000",
     "lint": "eslint",
@@ -29,6 +29,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/sanitize-html": "^2.16.2",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
     "supabase": "^2.122.0",
