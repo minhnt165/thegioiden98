@@ -74,6 +74,15 @@ insert into public.categories (name, slug, sort_order) values
   ('Ghế & Bàn', 'ghe-ban', 2),
   ('Đồ decor', 'do-decor', 3);
 
+-- Cột description có từ migration 20261029000004
+update public.categories c set description = v.description
+from (values
+  ('den', 'Đèn bàn, đèn sàn, đèn thả và đèn tường. Mỗi mẫu đều ghi rõ kích thước, chất liệu và loại bóng.'),
+  ('ghe-ban', 'Ghế thư giãn, bàn trà, bàn cà phê từ gỗ tự nhiên — chắc tay, dễ phối.'),
+  ('do-decor', 'Bình gốm, đồ trang trí nhỏ cho kệ sách, bàn trà và góc đầu giường.')
+) as v(slug, description)
+where c.slug = v.slug;
+
 insert into public.categories (name, slug, parent_id, sort_order)
 select v.name, v.slug, (select id from public.categories where slug = 'den'), v.sort_order
 from (values
