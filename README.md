@@ -48,6 +48,15 @@ npm run dev                  # http://localhost:4000
 | `npm run build` / `start` | Build và chạy production |
 | `npm run lint` · `npm run typecheck` | ESLint · TypeScript |
 | `npm run db:link` · `db:push` · `db:types` | Supabase CLI: link project, đẩy migration + seed, sinh `src/types/database.ts` |
+| `npm run test:e2e` | Test Playwright (`e2e/`) trên dev server cổng 4000, dùng Chrome cài sẵn |
+
+## Test E2E
+
+`npm run test:e2e` chạy các luồng chính trên dev server (đang chạy thì dùng luôn, chưa chạy thì tự bật) và DB Supabase trong `.env`:
+lập báo giá → khách đồng ý → thành đơn, thiếu hàng khi đồng ý, quản lý khách hàng.
+
+- Cần `E2E_ADMIN_EMAIL` / `E2E_ADMIN_PASSWORD` trong `.env`: test tự tạo tài khoản này (service role) và cấp quyền admin.
+- Dữ liệu test mang tên `E2E Khách …`, được xóa sau khi chạy và trả lại kho đã trừ. Mã đơn / báo giá vẫn tăng theo sequence.
 
 ## Cấu trúc
 
