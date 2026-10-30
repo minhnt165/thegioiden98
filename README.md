@@ -80,6 +80,8 @@ src/
 - Tiền lưu số nguyên VND (`bigint`). Giá & tồn theo **variant**; `products.base_price` chỉ là giá "từ".
 - Không xóa cứng sản phẩm/đơn/báo giá — dùng `status`. Xóa ảnh phải xóa cả file trong Storage.
 - Kho trừ ngay khi tạo đơn, cộng lại khi hủy / khách trả hàng (`orders.stock_deducted`). Chỉ sửa được đơn đang chờ xác nhận.
+- Mọi thay đổi tồn được trigger ghi vào `stock_movements` (sổ kho). Hàm SQL đổi tồn gọi `set_stock_context(...)` trước;
+  sửa thẳng bảng sẽ bị ghi là "Điều chỉnh · Sửa trực tiếp". Tồn của phân loại đã có chỉ đổi qua phiếu nhập, điều chỉnh, đơn.
 - SĐT Zalo, link Messenger/Instagram đọc từ bảng `settings` (`is_public = true`), sửa ở `/admin/cai-dat`.
 - Mã đơn `#1047`, mã báo giá `BG-0012` sinh bằng sequence. Link báo giá công khai dùng `public_token` ngẫu nhiên.
 - Báo giá không giữ kho. Khách bấm "Đồng ý" trên link → tự tạo đơn chờ xác nhận (trừ kho); thiếu hàng thì báo giá dừng ở

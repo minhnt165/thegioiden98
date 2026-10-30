@@ -282,6 +282,55 @@ export type Database = {
         "role" | "full_name" | "created_at"
       >;
       newsletter_subscribers: Table<{ id: string; email: string; created_at: string }, "id" | "created_at">;
+      stock_receipts: Table<
+        { id: string; code: string; note: string | null; created_by: string | null; created_at: string },
+        "id" | "code" | "note" | "created_by" | "created_at"
+      >;
+      stock_receipt_items: Table<
+        {
+          id: string;
+          receipt_id: string;
+          variant_id: string | null;
+          product_id: string | null;
+          name_snapshot: string;
+          variant_snapshot: string | null;
+          sku_snapshot: string;
+          qty: number;
+          sort_order: number;
+        },
+        "id" | "variant_id" | "product_id" | "variant_snapshot" | "sort_order",
+        [
+          Rel<"stock_receipt_items_receipt_id_fkey", "receipt_id", "stock_receipts">,
+          Rel<"stock_receipt_items_variant_id_fkey", "variant_id", "product_variants">,
+          Rel<"stock_receipt_items_product_id_fkey", "product_id", "products">,
+        ]
+      >;
+      stock_movements: Table<
+        {
+          id: string;
+          variant_id: string | null;
+          product_id: string | null;
+          name_snapshot: string;
+          variant_snapshot: string | null;
+          sku_snapshot: string;
+          kind: Database["public"]["Enums"]["stock_movement_kind"];
+          reason: Database["public"]["Enums"]["stock_adjust_reason"] | null;
+          note: string | null;
+          delta: number;
+          stock_after: number;
+          order_id: string | null;
+          receipt_id: string | null;
+          created_by: string | null;
+          created_at: string;
+        },
+        "id" | "variant_id" | "product_id" | "variant_snapshot" | "reason" | "note" | "order_id" | "receipt_id" | "created_by" | "created_at",
+        [
+          Rel<"stock_movements_variant_id_fkey", "variant_id", "product_variants">,
+          Rel<"stock_movements_product_id_fkey", "product_id", "products">,
+          Rel<"stock_movements_order_id_fkey", "order_id", "orders">,
+          Rel<"stock_movements_receipt_id_fkey", "receipt_id", "stock_receipts">,
+        ]
+      >;
     };
     Views: {
       product_sales: {
@@ -354,8 +403,58 @@ export type Database = {
         };
         Relationships: [];
       };
+      stock_movement_list: {
+        Row: {
+          id: string | null;
+          variant_id: string | null;
+          product_id: string | null;
+          name_snapshot: string | null;
+          variant_snapshot: string | null;
+          sku_snapshot: string | null;
+          kind: Database["public"]["Enums"]["stock_movement_kind"] | null;
+          reason: Database["public"]["Enums"]["stock_adjust_reason"] | null;
+          note: string | null;
+          delta: number | null;
+          stock_after: number | null;
+          order_id: string | null;
+          receipt_id: string | null;
+          created_by: string | null;
+          created_at: string | null;
+          product_name: string | null;
+          order_code: string | null;
+          receipt_code: string | null;
+          actor_name: string | null;
+          search: string | null;
+        };
+        Relationships: [];
+      };
+      stock_receipt_list: {
+        Row: {
+          id: string | null;
+          code: string | null;
+          note: string | null;
+          created_by: string | null;
+          created_at: string | null;
+          item_count: number | null;
+          total_qty: number | null;
+          items_summary: string | null;
+          actor_name: string | null;
+          search: string | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
+      admin_adjust_stock: {
+        Args: {
+          p_variant_id: string;
+          p_delta: number;
+          p_reason: Database["public"]["Enums"]["stock_adjust_reason"];
+          p_note?: string;
+        };
+        Returns: number;
+      };
+      admin_create_stock_receipt: { Args: { p: Json }; Returns: Json };
       admin_quote_to_order: {
         Args: { p_id: string; p_payment?: Database["public"]["Enums"]["payment_method"] };
         Returns: Json;
@@ -382,6 +481,8 @@ export type Database = {
       order_status: "pending" | "packing" | "shipping" | "done" | "cancelled" | "returned";
       quote_status: "draft" | "sent" | "viewed" | "accepted" | "ordered" | "expired" | "rejected";
       user_role: "admin" | "staff";
+      stock_movement_kind: "initial" | "receipt" | "sale" | "return" | "adjust";
+      stock_adjust_reason: "damaged" | "count" | "other";
     };
     CompositeTypes: { [_ in never]: never };
   };
