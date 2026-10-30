@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
+  acceptQuoteAsGuest,
   adminDb,
   cleanupCustomer,
   cleanupTestProduct,
@@ -136,27 +137,8 @@ test("tạo đơn → Bán; sửa đơn → Hủy / trả + Bán; hủy đơn �
 });
 
 test("khách đồng ý trên link báo giá → Bán, người làm trống", async () => {
-  const supabase = db();
-  const { data: customer } = await supabase
-    .from("customers")
-    .insert({ name: `E2E Khách ${phone.slice(-4)}`, phone, channel: "zalo" })
-    .select("id")
-    .single();
-  const validUntil = new Date(Date.now() + 7 * 86_400_000).toLocaleDateString("sv-SE", { timeZone: "Asia/Ho_Chi_Minh" });
-  const { data: quote, error } = await supabase
-    .from("quotes")
-    .insert({ customer_id: customer!.id, status: "sent", channel: "zalo", valid_until: validUntil, subtotal: 100000, total: 100000 })
-    .select("id, public_token")
-    .single();
-  expect(error).toBeNull();
-  await supabase.from("quote_items").insert({ quote_id: quote!.id, variant_id: variantId, name_snapshot: p.name, unit_price: 100000, qty: 1 });
-
-  const accepted = await supabase.rpc("public_accept_quote", { p_token: quote!.public_token });
-  expect(accepted.error).toBeNull();
-  const { data: after } = await supabase.from("quotes").select("status, order_id").eq("id", quote!.id).single();
-  expect(after!.status).toBe("ordered");
-
-  expect(await movementsOf({ orderId: after!.order_id! })).toEqual([expect.objectContaining({ kind: "sale", delta: -1, created_by: null })]);
+  const orderId = await acceptQuoteAsGuest({ phone, variantId, productName: p.name });
+  expect(await movementsOf({ orderId })).toEqual([expect.objectContaining({ kind: "sale", delta: -1, created_by: null })]);
 });
 
 test("sửa thẳng bảng (service role) vẫn ghi sổ", async () => {

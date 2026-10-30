@@ -156,6 +156,31 @@ export async function createTestProduct(opts: { stock?: number; withColor?: bool
   return { ...base, variantId: data.id, sku };
 }
 
+/** Dựng báo giá "đã gửi" 1 cái của phân loại rồi để khách đồng ý qua link (service role) — trả về id đơn được tạo */
+export async function acceptQuoteAsGuest(opts: { phone: string; variantId: string; productName: string }): Promise<string> {
+  const supabase = db();
+  const { data: customer, error: customerError } = await supabase
+    .from("customers")
+    .insert({ name: `E2E Khách ${opts.phone.slice(-4)}`, phone: opts.phone, channel: "zalo" })
+    .select("id")
+    .single();
+  if (customerError) throw customerError;
+  const validUntil = new Date(Date.now() + 7 * 86_400_000).toLocaleDateString("sv-SE", { timeZone: "Asia/Ho_Chi_Minh" });
+  const { data: quote, error } = await supabase
+    .from("quotes")
+    .insert({ customer_id: customer.id, status: "sent", channel: "zalo", valid_until: validUntil, subtotal: 100000, total: 100000 })
+    .select("id, public_token")
+    .single();
+  if (error) throw error;
+  await supabase.from("quote_items").insert({ quote_id: quote.id, variant_id: opts.variantId, name_snapshot: opts.productName, unit_price: 100000, qty: 1 });
+
+  const accepted = await supabase.rpc("public_accept_quote", { p_token: quote.public_token });
+  if (accepted.error) throw accepted.error;
+  const { data: after } = await supabase.from("quotes").select("status, order_id").eq("id", quote.id).single();
+  if (after?.status !== "ordered" || !after.order_id) throw new Error(`Báo giá chưa thành đơn: ${after?.status}`);
+  return after.order_id;
+}
+
 /** Các dòng sổ kho theo sản phẩm / đơn / phiếu, cũ trước */
 export async function movementsOf(filter: { productId?: string; orderId?: string; receiptId?: string }): Promise<Tables<"stock_movements">[]> {
   let query = db().from("stock_movements").select("*");

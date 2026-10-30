@@ -355,6 +355,7 @@ export function ProductForm({ initial, newId, categories }: Props) {
               onStockAdjusted={(id, stock) => {
                 setVariants((list) => list.map((v) => (v.id === id ? { ...v, stock } : v)));
                 setSavedVariants((list) => list.map((v) => (v.id === id ? { ...v, stock } : v)));
+                router.refresh(); // khối "Lịch sử kho" dưới form có dòng mới
               }}
             />
           </Card>
