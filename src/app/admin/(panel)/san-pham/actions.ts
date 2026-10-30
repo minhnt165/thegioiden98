@@ -93,7 +93,9 @@ function translateDbError(error: { code?: string; message: string }): string {
   return `Lưu chưa được: ${error.message}`;
 }
 
-export async function saveProduct(input: ProductPayload): Promise<ActionResult<{ id: string; slug: string }>> {
+export type SavedVariant = { id: string; sku: string; stock: number };
+
+export async function saveProduct(input: ProductPayload): Promise<ActionResult<{ id: string; slug: string; variants: SavedVariant[] }>> {
   await requireAdmin();
   const parsed = productSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Dữ liệu chưa hợp lệ." };
@@ -160,7 +162,10 @@ export async function saveProduct(input: ProductPayload): Promise<ActionResult<{
   updateTag(`product:${p.slug}`);
   if (existing?.slug && existing.slug !== p.slug) updateTag(`product:${existing.slug}`);
 
-  return { ok: true, data: { id: p.id, slug: p.slug } };
+  // Id + tồn thật của các phân loại sau khi lưu: form gắn id cho dòng mới, lần lưu sau không xóa / tạo lại
+  const { data: variants } = await supabase.from("product_variants").select("id, sku, stock").eq("product_id", p.id);
+
+  return { ok: true, data: { id: p.id, slug: p.slug, variants: variants ?? [] } };
 }
 
 const statusSchema = z.object({

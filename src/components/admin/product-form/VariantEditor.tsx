@@ -1,7 +1,8 @@
 "use client";
 
-import { Plus, RefreshCw, X } from "lucide-react";
+import { PencilLine, Plus, RefreshCw, X } from "lucide-react";
 import { useState } from "react";
+import { StockAdjustDialog } from "@/components/admin/StockAdjustDialog";
 import {
   buildSku,
   rebuildVariants,
@@ -22,6 +23,8 @@ type Props = {
   skuBase: string;
   defaultPrice: number;
   onChange: (options: OptionDraft[], variants: VariantDraft[]) => void;
+  /** Đã điều chỉnh tồn một phân loại đã lưu (qua sổ kho, không qua nút Lưu sản phẩm) */
+  onStockAdjusted: (variantId: string, stock: number) => void;
 };
 
 const isColorOption = (name: string) => /màu/i.test(name);
@@ -52,9 +55,10 @@ function ValueChipInput({ onAdd }: { onAdd: (value: string) => void }) {
 }
 
 /** Nhóm phân loại (Màu chao × Kích cỡ…) và bảng SKU / giá / tồn / bật bán cho từng tổ hợp */
-export function VariantEditor({ options, variants, skuBase, defaultPrice, onChange }: Props) {
+export function VariantEditor({ options, variants, skuBase, defaultPrice, onChange, onStockAdjusted }: Props) {
   const [bulkPrice, setBulkPrice] = useState<number | null>(null);
   const [bulkStock, setBulkStock] = useState<string>("");
+  const [adjusting, setAdjusting] = useState<{ id: string; label: string; stock: number } | null>(null);
   const defaults = { price: defaultPrice, skuBase };
 
   // Mọi thay đổi nhóm đều dựng lại bảng, giữ dữ liệu cũ của tổ hợp không đổi
@@ -168,7 +172,8 @@ export function VariantEditor({ options, variants, skuBase, defaultPrice, onChan
           value={bulkStock}
           onChange={(e) => setBulkStock(e.target.value)}
           placeholder="Tồn"
-          aria-label="Tồn kho áp dụng cho mọi dòng"
+          aria-label="Tồn ban đầu áp dụng cho dòng mới"
+          title="Chỉ áp cho phân loại chưa lưu; tồn của phân loại đã có đổi qua nút Điều chỉnh"
           className={`${SMALL_INPUT} w-20`}
         />
         <button
@@ -180,7 +185,7 @@ export function VariantEditor({ options, variants, skuBase, defaultPrice, onChan
               variants.map((v) => ({
                 ...v,
                 price: bulkPrice ?? v.price,
-                stock: bulkStock === "" ? v.stock : Math.max(0, Number.parseInt(bulkStock, 10) || 0),
+                stock: bulkStock === "" || v.id ? v.stock : Math.max(0, Number.parseInt(bulkStock, 10) || 0),
               })),
             );
             setBulkPrice(null);
@@ -230,14 +235,31 @@ export function VariantEditor({ options, variants, skuBase, defaultPrice, onChan
                     <MoneyInput value={v.price} onChange={(price) => setVariant(i, { price: price ?? 0 })} aria-label={`Giá ${label}`} className={`${SMALL_INPUT} w-32`} />
                   </td>
                   <td className="px-2 py-2">
-                    <input
-                      type="number"
-                      min={0}
-                      value={v.stock}
-                      onChange={(e) => setVariant(i, { stock: Math.max(0, Number.parseInt(e.target.value, 10) || 0) })}
-                      aria-label={`Tồn kho ${label}`}
-                      className={`${SMALL_INPUT} w-20 ${v.stock <= 0 ? "text-status-red" : ""}`}
-                    />
+                    {v.id ? (
+                      // Đã lưu: tồn chỉ đổi qua sổ kho (điều chỉnh / phiếu nhập / đơn)
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className={`w-10 text-right tabular-nums ${v.stock <= 0 ? "text-status-red" : ""}`}>{v.stock}</span>
+                        <button
+                          type="button"
+                          aria-label={`Điều chỉnh tồn ${label}`}
+                          title="Điều chỉnh tồn"
+                          onClick={() => setAdjusting({ id: v.id!, label, stock: v.stock })}
+                          className="flex size-7 items-center justify-center rounded-md text-muted hover:bg-cream hover:text-ink"
+                        >
+                          <PencilLine aria-hidden className="size-3.5" />
+                        </button>
+                      </span>
+                    ) : (
+                      <input
+                        type="number"
+                        min={0}
+                        value={v.stock}
+                        onChange={(e) => setVariant(i, { stock: Math.max(0, Number.parseInt(e.target.value, 10) || 0) })}
+                        aria-label={`Tồn kho ${label}`}
+                        title="Tồn ban đầu"
+                        className={`${SMALL_INPUT} w-20 ${v.stock <= 0 ? "text-status-red" : ""}`}
+                      />
+                    )}
                   </td>
                   <td className="px-2 py-2">
                     <input type="checkbox" checked={v.isActive} onChange={(e) => setVariant(i, { isActive: e.target.checked })} aria-label={`Đang bán ${label}`} className="size-4 accent-ink" />
@@ -251,6 +273,18 @@ export function VariantEditor({ options, variants, skuBase, defaultPrice, onChan
       <p className="text-[12px] text-muted">
         {variants.length} phân loại · bỏ chọn “Đang bán” để ẩn một phân loại khỏi cửa hàng mà vẫn giữ SKU.
       </p>
+      {adjusting && (
+        <StockAdjustDialog
+          variantId={adjusting.id}
+          label={adjusting.label}
+          stock={adjusting.stock}
+          onClose={() => setAdjusting(null)}
+          onDone={(stock) => {
+            onStockAdjusted(adjusting.id, stock);
+            setAdjusting(null);
+          }}
+        />
+      )}
     </div>
   );
 }

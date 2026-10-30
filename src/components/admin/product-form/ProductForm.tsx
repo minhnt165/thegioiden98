@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState, useTransition } from "react";
 import { saveProduct, setProductsStatus } from "@/app/admin/(panel)/san-pham/actions";
 import { formatDate } from "@/lib/format";
 import type { ProductFormData } from "@/lib/admin/products";
-import { buildSku, commonSkuBase, skuBaseFromName, type OptionDraft, type VariantDraft } from "@/lib/admin/variants";
+import { buildSku, commonSkuBase, skuBaseFromName, variantLabel, type OptionDraft, type VariantDraft } from "@/lib/admin/variants";
 import { COLORS, MATERIALS, SPACES } from "@/lib/shop/filters";
 import { slugify } from "@/lib/slug";
 import type { Enums } from "@/types/database";
@@ -31,6 +31,12 @@ const CHIP = "inline-flex h-8.5 cursor-pointer items-center gap-2 rounded-full b
 function toggleIn(list: string[], value: string) {
   return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
 }
+
+/** Phân loại đã lưu trong DB (để biết lần lưu tới sẽ xóa dòng nào còn hàng) */
+type SavedVariant = { id: string; label: string; stock: number };
+
+const savedOf = (variants: VariantDraft[], options: OptionDraft[]): SavedVariant[] =>
+  variants.flatMap((v) => (v.id ? [{ id: v.id, label: variantLabel(v, options), stock: v.stock }] : []));
 
 export function ProductForm({ initial, newId, categories }: Props) {
   const router = useRouter();
@@ -60,6 +66,7 @@ export function ProductForm({ initial, newId, categories }: Props) {
   }));
   const [options, setOptions] = useState<OptionDraft[]>(initial.options);
   const [variants, setVariants] = useState<VariantDraft[]>(initial.variants);
+  const [savedVariants, setSavedVariants] = useState(() => savedOf(initial.variants, initial.options));
   const [images, setImages] = useState<ImageItem[]>(initial.images);
   const [skuBase, setSkuBase] = useState(() => commonSkuBase(initial.variants) || skuBaseFromName(initial.name));
   const [slugTouched, setSlugTouched] = useState(!isNew);
@@ -89,6 +96,21 @@ export function ProductForm({ initial, newId, categories }: Props) {
       setMessage({ tone: "error", text: "Nhập tên sản phẩm trước khi lưu." });
       return;
     }
+    // Phân loại còn hàng sắp bị xóa (kể cả do đổi nhóm phân loại): tồn bị trừ khỏi kho, phải xác nhận
+    const keptIds = new Set(variants.map((v) => v.id));
+    const removed = savedVariants.filter((v) => v.stock > 0 && !keptIds.has(v.id));
+    if (
+      removed.length &&
+      !window.confirm(
+        `Lưu sẽ xóa ${removed.length} phân loại còn hàng, số tồn này bị trừ khỏi kho:\n` +
+          removed.map((v) => `• ${form.name} – ${v.label}: còn ${v.stock}`).join("\n") +
+          "\n\nTiếp tục lưu?",
+      )
+    ) {
+      return;
+    }
+    // Dòng chưa nhập SKU: tự sinh từ SKU gốc + giá trị phân loại
+    const sent = variants.map((v) => (v.sku.trim() ? v : { ...v, sku: buildSku(skuBase, v.optionValues, options) }));
     startTransition(async () => {
       const result = await saveProduct({
         id: productId,
@@ -111,14 +133,21 @@ export function ProductForm({ initial, newId, categories }: Props) {
         spaces: form.spaces,
         seoDescription: form.seoDescription,
         options,
-        // Dòng chưa nhập SKU: tự sinh từ SKU gốc + giá trị phân loại
-        variants: variants.map((v) => (v.sku.trim() ? v : { ...v, sku: buildSku(skuBase, v.optionValues, options) })),
+        variants: sent,
         images,
       });
       if (!result.ok) {
         setMessage({ tone: "error", text: result.error });
         return;
       }
+      // Gắn id + tồn thật (theo SKU) cho các dòng: lần lưu sau cập nhật đúng dòng, không xóa rồi tạo lại
+      const bySku = new Map(result.data.variants.map((v) => [v.sku.toUpperCase(), v]));
+      const synced = sent.map((v) => {
+        const saved = bySku.get(v.sku.toUpperCase());
+        return saved ? { ...v, id: saved.id, stock: saved.stock } : v;
+      });
+      setVariants(synced);
+      setSavedVariants(savedOf(synced, options));
       setForm((f) => ({ ...f, status, slug: result.data.slug }));
       setSavedPaths(new Set(images.map((i) => i.path)));
       setDirty(false);
@@ -322,6 +351,10 @@ export function ProductForm({ initial, newId, categories }: Props) {
                 setOptions(nextOptions);
                 setVariants(nextVariants);
                 setDirty(true);
+              }}
+              onStockAdjusted={(id, stock) => {
+                setVariants((list) => list.map((v) => (v.id === id ? { ...v, stock } : v)));
+                setSavedVariants((list) => list.map((v) => (v.id === id ? { ...v, stock } : v)));
               }}
             />
           </Card>

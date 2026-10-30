@@ -56,5 +56,20 @@ export const PAYMENT_LABEL: Record<Enums<"payment_method">, string> = {
   cash: "Tiền mặt",
 };
 
+/** Loại dòng sổ kho; slug dùng cho bộ lọc ?loai= */
+export const STOCK_KIND: Record<Enums<"stock_movement_kind">, { label: string; tone: Tone; slug: string }> = {
+  initial: { label: "Tồn đầu", tone: "gray", slug: "ton-dau" },
+  receipt: { label: "Nhập hàng", tone: "green", slug: "nhap" },
+  sale: { label: "Bán", tone: "blue", slug: "ban" },
+  return: { label: "Hủy / trả", tone: "amber", slug: "huy-tra" },
+  adjust: { label: "Điều chỉnh", tone: "red", slug: "dieu-chinh" },
+};
+
+export const STOCK_REASON: Record<Enums<"stock_adjust_reason">, string> = {
+  damaged: "Vỡ / hỏng",
+  count: "Kiểm kê lệch",
+  other: "Khác",
+};
+
 /** Đơn tính vào doanh thu: mọi trạng thái trừ hủy và đổi trả */
 export const REVENUE_EXCLUDED: Enums<"order_status">[] = ["cancelled", "returned"];
