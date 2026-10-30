@@ -103,6 +103,74 @@ export async function getProductStockHistory(productId: string, limit = 10): Pro
   return res.data.map(toMovement);
 }
 
+// ---------- Phiếu nhập ----------
+
+export type StockReceiptRow = {
+  id: string;
+  code: string;
+  note: string | null;
+  createdAt: string;
+  itemCount: number;
+  totalQty: number;
+  itemsSummary: string | null;
+  actorName: string | null;
+};
+
+export type StockReceiptItem = { productId: string | null; productName: string; variantLabel: string | null; sku: string; qty: number };
+
+function toReceipt(r: Database["public"]["Views"]["stock_receipt_list"]["Row"]): StockReceiptRow {
+  return {
+    id: r.id!,
+    code: r.code!,
+    note: r.note,
+    createdAt: r.created_at!,
+    itemCount: r.item_count ?? 0,
+    totalQty: r.total_qty ?? 0,
+    itemsSummary: r.items_summary,
+    actorName: r.actor_name,
+  };
+}
+
+export async function getStockReceipts(query: AdminStockQuery) {
+  const supabase = await createClient();
+  let builder = supabase.from("stock_receipt_list").select("*", { count: "exact" });
+  if (query.q) builder = builder.ilike("search", likePattern(query.q));
+
+  const from = (query.page - 1) * STOCK_PAGE_SIZE;
+  const res = await builder.order("created_at", { ascending: false }).range(from, from + STOCK_PAGE_SIZE - 1);
+  viewMissing(res.error?.code);
+  if (res.error && res.error.code !== "PGRST103") throw new Error(res.error.message);
+  return pageResult((res.data ?? []).map(toReceipt), res.count, query.page);
+}
+
+/** Phiếu nhập + các dòng; null khi không có */
+export async function getStockReceipt(id: string): Promise<{ receipt: StockReceiptRow; items: StockReceiptItem[] } | null> {
+  const supabase = await createClient();
+  const [receiptRes, itemsRes] = await Promise.all([
+    supabase.from("stock_receipt_list").select("*").eq("id", id).maybeSingle(),
+    supabase
+      .from("stock_receipt_items")
+      .select("product_id, name_snapshot, variant_snapshot, sku_snapshot, qty, product:products(name)")
+      .eq("receipt_id", id)
+      .order("sort_order"),
+  ]);
+  viewMissing(receiptRes.error?.code);
+  if (receiptRes.error) throw new Error(receiptRes.error.message);
+  if (itemsRes.error) throw new Error(itemsRes.error.message);
+  if (!receiptRes.data) return null;
+
+  return {
+    receipt: toReceipt(receiptRes.data),
+    items: itemsRes.data.map((i) => ({
+      productId: i.product_id,
+      productName: i.product?.name ?? i.name_snapshot,
+      variantLabel: i.variant_snapshot,
+      sku: i.sku_snapshot,
+      qty: i.qty,
+    })),
+  };
+}
+
 /** Tên sản phẩm cho chip bộ lọc "Sản phẩm: …" */
 export async function getProductName(productId: string): Promise<string | null> {
   const supabase = await createClient();

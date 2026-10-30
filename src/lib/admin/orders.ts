@@ -266,20 +266,28 @@ function optionLabel(values: Json, options: { name: string; sort_order: number }
 
 export async function getOrderFormOptions(): Promise<{ customers: CustomerOption[]; variants: VariantOption[] }> {
   const supabase = await createClient();
-  const [customersRes, productsRes] = await Promise.all([
+  const [customersRes, variants] = await Promise.all([
     supabase.from("customers").select("id, name, phone, address, channel").order("created_at", { ascending: false }).limit(1000),
-    supabase
-      .from("products")
-      .select(
-        "id, name, status, product_options(name, sort_order), product_variants(id, sku, price, stock, is_active, option_values, sort_order), product_images(storage_path, is_cover)",
-      )
-      .neq("status", "draft")
-      .order("name"),
+    getVariantOptions(false),
   ]);
   if (customersRes.error) throw new Error(customersRes.error.message);
+
+  return { customers: customersRes.data, variants };
+}
+
+/** Mọi phân loại để chọn vào đơn / báo giá / phiếu nhập. Phiếu nhập lấy cả sản phẩm nháp (hàng về trước khi mở bán). */
+export async function getVariantOptions(includeDraft: boolean): Promise<VariantOption[]> {
+  const supabase = await createClient();
+  let builder = supabase
+    .from("products")
+    .select(
+      "id, name, status, product_options(name, sort_order), product_variants(id, sku, price, stock, is_active, option_values, sort_order), product_images(storage_path, is_cover)",
+    );
+  if (!includeDraft) builder = builder.neq("status", "draft");
+  const productsRes = await builder.order("name");
   if (productsRes.error) throw new Error(productsRes.error.message);
 
-  const variants = productsRes.data.flatMap((p) => {
+  return productsRes.data.flatMap((p) => {
     const cover = p.product_images.find((img) => img.is_cover)?.storage_path ?? null;
     return [...p.product_variants]
       .sort((a, b) => a.sort_order - b.sort_order)
@@ -297,8 +305,6 @@ export async function getOrderFormOptions(): Promise<{ customers: CustomerOption
         tint: tintFor(p.id),
       }));
   });
-
-  return { customers: customersRes.data, variants };
 }
 
 /** Dữ liệu form sửa đơn; null khi không có đơn. Đơn đã qua bước chờ xác nhận thì không sửa được (trang tự chặn). */

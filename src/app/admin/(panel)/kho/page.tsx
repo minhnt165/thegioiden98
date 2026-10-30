@@ -5,7 +5,8 @@ import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { StockFilters } from "@/components/admin/StockFilters";
 import { StockMovementTable } from "@/components/admin/StockMovementTable";
 import { BTN_PRIMARY, PageHeader, Pagination } from "@/components/admin/ui";
-import { getProductName, getStockMovements } from "@/lib/admin/stock";
+import { getProductName, getStockMovements, getStockReceipts } from "@/lib/admin/stock";
+import { formatDateTime } from "@/lib/format";
 import { STOCK_PAGE_SIZE, adminStockSearch, parseAdminStockQuery, type AdminStockQuery, type StockTab } from "@/lib/admin/stock-filters";
 
 export const metadata: Metadata = { title: "Kho" };
@@ -54,6 +55,58 @@ async function HistoryTab({ query }: { query: AdminStockQuery }) {
   );
 }
 
+async function ReceiptsTab({ query }: { query: AdminStockQuery }) {
+  const { rows, total, totalPages } = await getStockReceipts(query);
+
+  return (
+    <>
+      <StockFilters query={query} />
+      <div className="overflow-x-auto rounded-2xl border border-line bg-white">
+        <table className="w-full min-w-225 border-collapse text-[14px]">
+          <thead>
+            <tr className="bg-cream text-left text-[12px] text-muted">
+              <th className="px-4 py-3 font-medium">Mã phiếu</th>
+              <th className="px-2 py-3 font-medium">Ngày lập</th>
+              <th className="px-2 py-3 font-medium">Sản phẩm</th>
+              <th className="px-2 py-3 text-right font-medium">Tổng SL</th>
+              <th className="px-2 py-3 font-medium">Người lập</th>
+              <th className="px-4 py-3 font-medium">Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.id} className="border-t border-line-soft align-top">
+                <td className="px-4 py-3.5">
+                  <Link href={`/admin/kho/nhap/${r.id}`} className="font-medium hover:text-terracotta">
+                    {r.code}
+                  </Link>
+                </td>
+                <td className="whitespace-nowrap px-2 py-3.5 text-[13px] text-muted">{formatDateTime(r.createdAt)}</td>
+                <td className="max-w-96 px-2 py-3.5 text-[13px]">
+                  <span className="line-clamp-2">{r.itemsSummary}</span>
+                </td>
+                <td className="px-2 py-3.5 text-right tabular-nums">{r.totalQty}</td>
+                <td className="px-2 py-3.5 text-[13px] text-muted">{r.actorName ?? "—"}</td>
+                <td className="max-w-64 px-4 py-3.5 text-[13px] text-muted">
+                  <span className="line-clamp-2">{r.note || "—"}</span>
+                </td>
+              </tr>
+            ))}
+            {!rows.length && (
+              <tr>
+                <td colSpan={6} className="px-4 py-12 text-center text-[14px] text-muted">
+                  {query.q ? "Không có phiếu khớp tìm kiếm." : "Chưa có phiếu nhập nào."}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <ListFooter query={query} count={rows.length} total={total} totalPages={totalPages} unit="phiếu" />
+    </>
+  );
+}
+
 async function AdminStockPage({ searchParams }: PageProps<"/admin/kho">) {
   const query = parseAdminStockQuery(await searchParams);
 
@@ -88,11 +141,7 @@ async function AdminStockPage({ searchParams }: PageProps<"/admin/kho">) {
         })}
       </nav>
 
-      {query.tab === "lich-su" ? (
-        <HistoryTab query={query} />
-      ) : (
-        <p className="rounded-2xl border border-line bg-white px-4 py-12 text-center text-[14px] text-muted">Chưa có phiếu nhập.</p>
-      )}
+      {query.tab === "lich-su" ? <HistoryTab query={query} /> : <ReceiptsTab query={query} />}
     </>
   );
 }
