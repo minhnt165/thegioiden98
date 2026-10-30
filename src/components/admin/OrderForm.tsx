@@ -163,7 +163,7 @@ export function OrderForm({ initial, customers, variants }: Props) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-5">
       <PageHeader
-        breadcrumb={[{ href: "/admin/don-hang", label: "Đơn hàng" }]}
+        breadcrumb={[{ href: "/admin/don-hang", label: "Đơn hàng" }, ...(isNew ? [] : [{ href: `/admin/don-hang/${initial.id}`, label: `Đơn ${initial.code}` }])]}
         title={isNew ? "Tạo đơn thủ công" : `Sửa đơn ${initial.code}`}
         subtitle={isNew ? "Đơn nhận qua Zalo, Messenger hoặc tại showroom. Kho được trừ ngay khi lưu." : "Chỉ sửa được khi đơn đang chờ xác nhận."}
         actions={

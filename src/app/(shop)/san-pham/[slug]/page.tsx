@@ -64,7 +64,9 @@ async function ProductContent({ params }: { params: Promise<{ slug: string }> })
         <Breadcrumbs
           items={[
             { href: "/", label: "Trang chủ" },
-            ...(group ? [{ href: `/danh-muc/${group.slug}`, label: group.name }] : []),
+            ...[product.parentCategory, product.category]
+              .filter((c) => c !== null)
+              .map((c) => ({ href: `/danh-muc/${c.slug}`, label: c.name })),
             { label: product.name },
           ]}
         />
