@@ -5,7 +5,7 @@ import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { StockFilters } from "@/components/admin/StockFilters";
 import { StockMovementTable } from "@/components/admin/StockMovementTable";
 import { BTN_PRIMARY, PageHeader, Pagination } from "@/components/admin/ui";
-import { getProductName, getStockMovements, getStockReceipts } from "@/lib/admin/stock";
+import { actorLabel, getProductName, getStockMovements, getStockReceipts } from "@/lib/admin/stock";
 import { formatDateTime } from "@/lib/format";
 import { STOCK_PAGE_SIZE, adminStockSearch, parseAdminStockQuery, type AdminStockQuery, type StockTab } from "@/lib/admin/stock-filters";
 
@@ -86,7 +86,7 @@ async function ReceiptsTab({ query }: { query: AdminStockQuery }) {
                   <span className="line-clamp-2">{r.itemsSummary}</span>
                 </td>
                 <td className="px-2 py-3.5 text-right tabular-nums">{r.totalQty}</td>
-                <td className="px-2 py-3.5 text-[13px] text-muted">{r.actorName ?? "—"}</td>
+                <td className="px-2 py-3.5 text-[13px] text-muted">{actorLabel(r) ?? "—"}</td>
                 <td className="max-w-64 px-4 py-3.5 text-[13px] text-muted">
                   <span className="line-clamp-2">{r.note || "—"}</span>
                 </td>

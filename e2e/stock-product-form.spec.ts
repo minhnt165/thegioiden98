@@ -104,3 +104,24 @@ test("phân loại mới thêm ngay trên form rồi lưu hai lần: không xóa
   expect(await variantsInDb()).toEqual(afterFirst);
   expect(await movementsOf({ productId: p.productId })).toHaveLength(count + 1); // chỉ Tồn đầu +2
 });
+
+test("SKU dòng mới gõ thừa khoảng trắng: lưu hai lần vẫn không xóa / tạo lại", async ({ page }) => {
+  await page.goto(`/admin/san-pham/${p.productId}`);
+  const count = (await movementsOf({ productId: p.productId })).length;
+
+  await page.getByRole("textbox", { name: "Thêm giá trị" }).last().fill("Lớn");
+  await page.getByRole("textbox", { name: "Thêm giá trị" }).last().press("Enter");
+  await page.getByRole("textbox", { name: "SKU Trắng · Lớn", exact: true }).fill(`${p.sku}-L `);
+  await page.getByRole("spinbutton", { name: "Tồn kho Trắng · Lớn" }).fill("1");
+  await page.getByRole("button", { name: "Lưu thay đổi" }).click();
+  await expect.poll(async () => (await variantsInDb()).length).toBe(3);
+  const afterFirst = await variantsInDb();
+  expect(afterFirst.map((v) => v.sku)).toContain(`${p.sku}-L`);
+
+  await nameInput(page).fill(`${p.name} D`);
+  await page.getByRole("button", { name: "Lưu thay đổi" }).click();
+  await expect.poll(async () => (await db().from("products").select("name").eq("id", p.productId).single()).data?.name).toBe(`${p.name} D`);
+
+  expect(await variantsInDb()).toEqual(afterFirst);
+  expect(await movementsOf({ productId: p.productId })).toHaveLength(count + 1); // chỉ Tồn đầu +1
+});

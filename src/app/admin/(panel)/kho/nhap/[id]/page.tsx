@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { withContentSkeleton } from "@/components/admin/ContentSkeleton";
 import { BTN_SECONDARY, Card, PageHeader } from "@/components/admin/ui";
-import { getStockReceipt } from "@/lib/admin/stock";
+import { actorLabel, getStockReceipt } from "@/lib/admin/stock";
 import { formatDateTime } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Phiếu nhập" };
@@ -16,13 +16,14 @@ async function StockReceiptPage({ params }: PageProps<"/admin/kho/nhap/[id]">) {
   const data = await getStockReceipt(id);
   if (!data) notFound();
   const { receipt, items } = data;
+  const actor = actorLabel(receipt);
 
   return (
     <>
       <PageHeader
         title={`Phiếu nhập ${receipt.code}`}
         breadcrumb={[{ href: "/admin/kho", label: "Kho" }]}
-        subtitle={`Lập ${formatDateTime(receipt.createdAt)}${receipt.actorName ? ` · ${receipt.actorName}` : ""}`}
+        subtitle={`Lập ${formatDateTime(receipt.createdAt)}${actor ? ` · ${actor}` : ""}`}
         actions={
           <Link href="/admin/kho/nhap/moi" className={BTN_SECONDARY}>
             + Tạo phiếu khác

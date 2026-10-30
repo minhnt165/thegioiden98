@@ -163,9 +163,14 @@ export async function saveProduct(input: ProductPayload): Promise<ActionResult<{
   if (existing?.slug && existing.slug !== p.slug) updateTag(`product:${existing.slug}`);
 
   // Id + tồn thật của các phân loại sau khi lưu: form gắn id cho dòng mới, lần lưu sau không xóa / tạo lại
-  const { data: variants } = await supabase.from("product_variants").select("id, sku, stock").eq("product_id", p.id);
+  const { data: variants, error: readError } = await supabase.from("product_variants").select("id, sku, stock").eq("product_id", p.id);
+  if (readError) {
+    // Đã lưu nhưng không đọc lại được: form không biết id dòng mới, lưu tiếp sẽ xóa / tạo lại — bắt tải lại trang
+    console.error("Không đọc lại được phân loại sau khi lưu:", readError);
+    return { ok: false, error: "Đã lưu nhưng chưa tải lại được phân loại — hãy tải lại trang trước khi sửa tiếp." };
+  }
 
-  return { ok: true, data: { id: p.id, slug: p.slug, variants: variants ?? [] } };
+  return { ok: true, data: { id: p.id, slug: p.slug, variants } };
 }
 
 const statusSchema = z.object({

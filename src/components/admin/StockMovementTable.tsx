@@ -1,13 +1,12 @@
 import Link from "next/link";
-import type { StockMovementRow } from "@/lib/admin/stock";
+import { actorLabel, type StockMovementRow } from "@/lib/admin/stock";
 import { STOCK_KIND, STOCK_REASON } from "@/lib/admin/status";
 import { formatDateTime } from "@/lib/format";
 import { Badge } from "./ui";
 
-/** Người làm: tên trong hồ sơ; trống thì là khách bấm đồng ý trên link báo giá (đơn tự tạo) hoặc hệ thống */
+/** Người làm; không có phiên đăng nhập thì là khách bấm đồng ý trên link báo giá (đơn tự tạo) hoặc hệ thống */
 function actorOf(m: StockMovementRow): string {
-  if (m.actorName) return m.actorName;
-  return m.kind === "sale" && m.orderId ? "Khách (link báo giá)" : "Hệ thống";
+  return actorLabel(m) ?? (m.kind === "sale" && m.orderId ? "Khách (link báo giá)" : "Hệ thống");
 }
 
 /** Bảng dòng sổ kho: màn Kho (có cột sản phẩm) và khối "Lịch sử kho" ở trang sản phẩm (không cần) */

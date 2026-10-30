@@ -43,7 +43,14 @@ export type StockMovementRow = {
   receiptId: string | null;
   receiptCode: string | null;
   actorName: string | null;
+  /** null: không có phiên đăng nhập (khách bấm đồng ý trên link báo giá, sửa thẳng DB) */
+  createdBy: string | null;
 };
+
+/** Tên người làm: họ tên trong hồ sơ; người đăng nhập chưa đặt tên thì "Admin" (như báo giá) */
+export function actorLabel(row: { actorName: string | null; createdBy: string | null }): string | null {
+  return row.actorName ?? (row.createdBy ? "Admin" : null);
+}
 
 type MovementListRow = Database["public"]["Views"]["stock_movement_list"]["Row"];
 
@@ -65,6 +72,7 @@ function toMovement(m: MovementListRow): StockMovementRow {
     receiptId: m.receipt_id,
     receiptCode: m.receipt_code,
     actorName: m.actor_name,
+    createdBy: m.created_by,
   };
 }
 
@@ -114,6 +122,7 @@ export type StockReceiptRow = {
   totalQty: number;
   itemsSummary: string | null;
   actorName: string | null;
+  createdBy: string | null;
 };
 
 export type StockReceiptItem = { productId: string | null; productName: string; variantLabel: string | null; sku: string; qty: number };
@@ -128,6 +137,7 @@ function toReceipt(r: Database["public"]["Views"]["stock_receipt_list"]["Row"]):
     totalQty: r.total_qty ?? 0,
     itemsSummary: r.items_summary,
     actorName: r.actor_name,
+    createdBy: r.created_by,
   };
 }
 

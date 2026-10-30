@@ -109,8 +109,9 @@ export function ProductForm({ initial, newId, categories }: Props) {
     ) {
       return;
     }
-    // Dòng chưa nhập SKU: tự sinh từ SKU gốc + giá trị phân loại
-    const sent = variants.map((v) => (v.sku.trim() ? v : { ...v, sku: buildSku(skuBase, v.optionValues, options) }));
+    // Dòng chưa nhập SKU: tự sinh từ SKU gốc + giá trị phân loại. Gửi SKU đã cắt khoảng trắng như server lưu,
+    // để ghép lại id theo SKU sau khi lưu không trượt
+    const sent = variants.map((v) => ({ ...v, sku: v.sku.trim() || buildSku(skuBase, v.optionValues, options) }));
     startTransition(async () => {
       const result = await saveProduct({
         id: productId,
@@ -141,9 +142,9 @@ export function ProductForm({ initial, newId, categories }: Props) {
         return;
       }
       // Gắn id + tồn thật (theo SKU) cho các dòng: lần lưu sau cập nhật đúng dòng, không xóa rồi tạo lại
-      const bySku = new Map(result.data.variants.map((v) => [v.sku.toUpperCase(), v]));
+      const bySku = new Map(result.data.variants.map((v) => [v.sku.trim().toUpperCase(), v]));
       const synced = sent.map((v) => {
-        const saved = bySku.get(v.sku.toUpperCase());
+        const saved = bySku.get(v.sku.trim().toUpperCase());
         return saved ? { ...v, id: saved.id, stock: saved.stock } : v;
       });
       setVariants(synced);

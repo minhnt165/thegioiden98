@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { acceptQuoteAsGuest, adminDb, cleanupCustomer, cleanupTestProduct, createTestProduct, testPhone, type TestProduct } from "./db";
+import { acceptQuoteAsGuest, adminDb, cleanupCustomer, cleanupTestProduct, createTestProduct, db, testPhone, type TestProduct } from "./db";
 
 // Màn Kho, tab Lịch sử: tìm không dấu, lọc loại, khối "Lịch sử kho" ở trang sản phẩm, nhãn người làm.
 
@@ -50,11 +50,43 @@ test("trang sản phẩm có khối Lịch sử kho, Xem tất cả lọc theo s
   await expect(page.getByText(`Sản phẩm: ${p.name}`)).toBeVisible();
 });
 
+test("admin chưa có họ tên: dòng của admin hiện 'Admin', không nhầm thành khách / hệ thống", async ({ page }) => {
+  const admin = await adminDb();
+  const adminId = (await admin.auth.getUser()).data.user!.id;
+  await db().from("profiles").update({ full_name: null }).eq("id", adminId);
+  try {
+    await admin.rpc("admin_adjust_stock", { p_variant_id: p.variantId, p_delta: 1, p_reason: "count" });
+    const created = await admin.rpc("admin_save_order", {
+      p: {
+        customer: { name: `E2E Khách ${phone.slice(-4)}`, phone, address: "" },
+        channel: "zalo",
+        payment: "cod",
+        discount: 0,
+        shipping_fee: 0,
+        note: "",
+        items: [{ variant_id: p.variantId, qty: 1, unit_price: 100000 }],
+      },
+    });
+    expect(created.error).toBeNull();
+    const receipt = await admin.rpc("admin_create_stock_receipt", { p: { note: "E2E không tên", items: [{ variant_id: p.variantId, qty: 1 }] } });
+    expect(receipt.error).toBeNull();
+
+    await page.goto(`/admin/kho?tab=lich-su&loai=ban&q=${encodeURIComponent((created.data as { code: string }).code)}`);
+    await expect(rowsWith(page, p.sku).getByText("Admin", { exact: true })).toBeVisible();
+    await page.goto(`/admin/kho?tab=lich-su&loai=dieu-chinh&q=${encodeURIComponent(p.sku)}`);
+    await expect(rowsWith(page, "Kiểm kê lệch").getByText("Admin", { exact: true })).toBeVisible();
+    await page.goto(`/admin/kho/nhap/${(receipt.data as { id: string }).id}`);
+    await expect(page.getByText(/· Admin$/).filter({ visible: true })).toBeVisible();
+  } finally {
+    await db().from("profiles").update({ full_name: "E2E Admin" }).eq("id", adminId);
+  }
+});
+
 test("dòng Bán từ link báo giá hiện người làm 'Khách (link báo giá)', có link tới đơn", async ({ page }) => {
   await acceptQuoteAsGuest({ phone, variantId: p.variantId, productName: p.name });
   await page.goto(`/admin/kho?tab=lich-su&loai=ban&q=${encodeURIComponent(p.sku)}`);
-  const row = rowsWith(page, p.sku);
+  // Test trước có thêm một dòng Bán của admin cho cùng SKU
+  const row = rowsWith(page, p.sku).filter({ hasText: "Khách (link báo giá)" });
   await expect(row).toHaveCount(1);
-  await expect(row.getByText("Khách (link báo giá)")).toBeVisible();
   await expect(row.getByRole("link", { name: /^Đơn #\d+$/ })).toBeVisible();
 });
